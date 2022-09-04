@@ -32,3 +32,5 @@ nerves_metal_detector-*.tar
 npm-debug.log
 /assets/node_modules/
 
+/_postgres-data
+

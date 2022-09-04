@@ -2,9 +2,10 @@ import Config
 
 # Configure your database
 config :nerves_metal_detector, NervesMetalDetector.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
+  username: System.get_env("POSTGRES_USER") || "postgres",
+  password: System.get_env("POSTGRES_PASSWORD") || "postgres",
+  hostname: System.get_env("POSTGRES_HOSTNAME") || "localhost",
+  port: System.get_env("POSTGRES_PORT") || 5432,
   database: "nerves_metal_detector_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
