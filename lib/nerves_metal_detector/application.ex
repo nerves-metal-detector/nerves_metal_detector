@@ -15,9 +15,10 @@ defmodule NervesMetalDetector.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: NervesMetalDetector.PubSub},
       # Start the Endpoint (http/https)
-      NervesMetalDetectorWeb.Endpoint
+      NervesMetalDetectorWeb.Endpoint,
       # Start a worker by calling: NervesMetalDetector.Worker.start_link(arg)
       # {NervesMetalDetector.Worker, arg}
+      {Oban, Application.fetch_env!(:nerves_metal_detector, Oban)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

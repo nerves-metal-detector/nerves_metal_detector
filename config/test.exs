@@ -29,3 +29,5 @@ config :logger, level: :warn
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :nerves_metal_detector, Oban, testing: :inline
