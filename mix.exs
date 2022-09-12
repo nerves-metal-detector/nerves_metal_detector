@@ -40,7 +40,6 @@ defmodule NervesMetalDetector.MixProject do
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.17.5"},
-      {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
@@ -50,7 +49,11 @@ defmodule NervesMetalDetector.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:ecto_psql_extras, "~> 0.7"},
-      {:oban, "~> 2.13"}
+      {:oban, "~> 2.13"},
+      {:httpoison, "~> 1.8"},
+      {:floki, "~> 0.33.1"},
+      {:ex_money, "~> 5.12"},
+      {:ex_money_sql, "~> 1.7"}
     ]
   end
 

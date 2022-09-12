@@ -54,10 +54,12 @@ config :nerves_metal_detector, Oban,
   plugins: [
     Oban.Plugins.Pruner,
     {Oban.Plugins.Cron,
-      crontab: [
-        {"0 * * * *", NervesMetalDetector.Jobs.ScheduleProductUpdates}
-      ]}
+     crontab: [
+       {"0 * * * *", NervesMetalDetector.Jobs.ScheduleProductUpdates}
+     ]}
   ]
+
+config :ex_cldr, default_backend: NervesMetalDetector.Cldr
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

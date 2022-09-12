@@ -38,7 +38,9 @@ defmodule NervesMetalDetectorWeb.Router do
     scope "/" do
       pipe_through :browser
 
-      live_dashboard "/dashboard", metrics: NervesMetalDetectorWeb.Telemetry, ecto_repos: [NervesMetalDetector.Repo]
+      live_dashboard "/dashboard",
+        metrics: NervesMetalDetectorWeb.Telemetry,
+        ecto_repos: [NervesMetalDetector.Repo]
     end
   end
 
