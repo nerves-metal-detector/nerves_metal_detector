@@ -19,7 +19,7 @@ defmodule NervesMetalDetector.Vendors.BerryBaseDe do
   end
 end
 
-defimpl NervesMetalDetector.ProductAvailability.Fetcher,
+defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   for: NervesMetalDetector.Vendors.BerryBaseDe.ProductUpdate do
   alias NervesMetalDetector.Vendors.BerryBaseDe
 

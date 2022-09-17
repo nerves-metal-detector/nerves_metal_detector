@@ -5,7 +5,7 @@ defmodule NervesMetalDetector.Jobs.ProductUpdate do
 
   require Logger
 
-  alias NervesMetalDetector.ProductAvailability
+  alias NervesMetalDetector.Inventory.ProductAvailability
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: args}) do
@@ -44,7 +44,7 @@ defmodule NervesMetalDetector.Jobs.ProductUpdate do
   end
 
   defp to_atom(value) when is_atom(value), do: value
-  defp to_atom(value) when is_binary(value), do: String.to_atom(value)
+  defp to_atom(value) when is_binary(value), do: String.to_existing_atom(value)
 
   defp report_error(args, reason) do
     Logger.error("""

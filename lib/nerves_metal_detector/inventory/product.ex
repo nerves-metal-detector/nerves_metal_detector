@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Product do
+defmodule NervesMetalDetector.Inventory.Product do
   @moduledoc false
 
   @enforce_keys [:sku, :name, :type]

@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.ProductAvailability do
+defmodule NervesMetalDetector.Inventory.ProductAvailability do
   use Ecto.Schema
   import Ecto.Changeset
   alias NervesMetalDetector.Repo
