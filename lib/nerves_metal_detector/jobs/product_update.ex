@@ -5,15 +5,15 @@ defmodule NervesMetalDetector.Jobs.ProductUpdate do
 
   require Logger
 
-  alias NervesMetalDetector.Inventory.ProductAvailability
+  alias NervesMetalDetector.Inventory
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: args}) do
     args = decode_args(args)
 
-    with {:ok, result} <- ProductAvailability.Fetcher.fetch_availability(args),
+    with {:ok, result} <- Inventory.fetch_product_availability(args),
          data <- Map.put(result, :fetched_at, DateTime.now!("Etc/UTC")),
-         {:ok, _entry} <- ProductAvailability.store(data) do
+         {:ok, _entry} <- Inventory.store_product_availability(data) do
       :ok
     else
       {:error, reason} ->

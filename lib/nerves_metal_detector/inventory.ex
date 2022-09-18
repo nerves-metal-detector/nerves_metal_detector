@@ -2,6 +2,7 @@ defmodule NervesMetalDetector.Inventory do
   @moduledoc false
 
   alias NervesMetalDetector.Inventory.Product
+  alias NervesMetalDetector.Inventory.ProductAvailability
   alias NervesMetalDetector.Vendors.BerryBaseDe
 
   @products [
@@ -54,4 +55,12 @@ defmodule NervesMetalDetector.Inventory do
   def products(), do: @products
 
   def product_update_items(), do: @product_update_items
+
+  def fetch_product_availability(args) do
+    ProductAvailability.Fetcher.fetch_availability(args)
+  end
+
+  def store_product_availability(attrs) do
+    ProductAvailability.store(attrs)
+  end
 end
