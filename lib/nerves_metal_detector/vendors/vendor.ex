@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendor do
+defmodule NervesMetalDetector.Vendors.Vendor do
   defstruct [:id, :name, :country, :homepage]
 
   @type t :: %__MODULE__{

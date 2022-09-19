@@ -1,5 +1,5 @@
 defmodule NervesMetalDetector.Vendors.BerryBaseDe do
-  alias NervesMetalDetector.Vendor
+  alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
 
