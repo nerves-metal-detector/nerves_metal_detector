@@ -13,9 +13,14 @@ defmodule NervesMetalDetector.Jobs.ProductUpdate do
 
     with {:ok, result} <- Inventory.fetch_product_availability(args),
          data <- Map.put(result, :fetched_at, DateTime.now!("Etc/UTC")),
+         {:sku_check, {:ok, _}, _} <- {:sku_check, Inventory.get_product_by_sku(data.sku), data},
          {:ok, _entry} <- Inventory.store_product_availability(data) do
       :ok
     else
+      {:sku_check, {:error, _}, data} ->
+        report_sku_check_error(args, data)
+        {:error, :sku_not_found}
+
       {:error, reason} ->
         report_error(args, reason)
         {:error, reason}
@@ -45,6 +50,18 @@ defmodule NervesMetalDetector.Jobs.ProductUpdate do
 
   defp to_atom(value) when is_atom(value), do: value
   defp to_atom(value) when is_binary(value), do: String.to_existing_atom(value)
+
+  defp report_sku_check_error(args, data) do
+    Logger.error("""
+    Fetched SKU is unknown!
+
+    Job args:
+    #{inspect(args)}
+
+    Fetched data:
+    #{inspect(data)}
+    """)
+  end
 
   defp report_error(args, reason) do
     Logger.error("""

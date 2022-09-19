@@ -6,6 +6,8 @@ defmodule NervesMetalDetector.Inventory do
 
   def products(), do: Data.Products.all()
 
+  def get_product_by_sku(sku), do: Data.Products.get_by_sku(String.downcase(sku))
+
   def product_update_items(), do: Data.ProductUpdateItems.all()
 
   def fetch_product_availability(args) do
