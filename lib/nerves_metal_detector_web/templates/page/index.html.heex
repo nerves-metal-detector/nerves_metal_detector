@@ -1,41 +1,28 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace of mind from prototype to production</p>
-</section>
+<section>
+  <h1>Nerves Metal Detector</h1>
 
-<section class="row">
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.6/CHANGELOG.md">v1.6 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
-      </li>
-      <li>
-        <a href="https://web.libera.chat/#elixir">#elixir on Libera Chat (IRC)</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-      <li>
-        <a href="https://elixir-slackin.herokuapp.com/">Elixir on Slack</a>
-      </li>
-      <li>
-        <a href="https://discord.gg/elixir">Elixir on Discord</a>
-      </li>
-    </ul>
-  </article>
+  <table>
+    <tr>
+      <th>SKU</th>
+      <th>Name</th>
+      <th>Link</th>
+      <th>In Stock</th>
+      <th>Items In Stock</th>
+      <th>Price</th>
+      <th>Vendor</th>
+      <th>Last Checked (UTC)</th>
+    </tr>
+    <%= for pa <- @product_availabilities do %>
+    <tr class={[pa.in_stock && "in-stock"]}>
+      <td><%= pa.sku %></td>
+      <td><%= pa.product.name %></td>
+      <td><a href={pa.url} target="_blank">Open</a></td>
+      <td><%= if pa.in_stock, do: "Yes", else: "No" %></td>
+      <td><%= if pa.items_in_stock, do: pa.items_in_stock, else: "-" %></td>
+      <td><%= pa.price %></td>
+      <td><%= "#{pa.vendor.name} (#{pa.vendor.country |> Atom.to_string() |> String.upcase()})" %></td>
+      <td><%= NervesMetalDetector.Cldr.DateTime.to_string!(pa.fetched_at, format: "MMM dd, HH:mm") %></td>
+    </tr>
+    <% end %>
+  </table>
 </section>

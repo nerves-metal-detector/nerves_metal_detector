@@ -53,7 +53,8 @@ defmodule NervesMetalDetector.MixProject do
       {:httpoison, "~> 1.8"},
       {:floki, "~> 0.33.1"},
       {:ex_money, "~> 5.12"},
-      {:ex_money_sql, "~> 1.7"}
+      {:ex_money_sql, "~> 1.7"},
+      {:ex_cldr_dates_times, "~> 2.0"}
     ]
   end
 

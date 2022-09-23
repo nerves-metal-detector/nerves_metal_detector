@@ -19,7 +19,7 @@ pre{padding: 1em;}
 
 .container{
   margin: 0 auto;
-  max-width: 80.0rem;
+  max-width: 100%;
   padding: 0 2.0rem;
   position: relative;
   width: 100%
