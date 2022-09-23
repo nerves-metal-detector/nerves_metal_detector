@@ -1,0 +1,3 @@
+#!/bin/sh
+cd -P -- "$(dirname -- "$0")"
+exec ./nerves_metal_detector eval NervesMetalDetector.Release.migrate
