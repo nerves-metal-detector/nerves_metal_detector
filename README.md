@@ -1,5 +1,7 @@
 # NervesMetalDetector
 
+![Test Status](https://github.com/nerves-metal-detector/nerves_metal_detector/actions/workflows/tests.yml/badge.svg)
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
