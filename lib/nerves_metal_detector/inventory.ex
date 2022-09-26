@@ -14,9 +14,10 @@ defmodule NervesMetalDetector.Inventory do
   def product_update_items(), do: Data.ProductUpdateItems.all()
 
   def list_product_availabilities() do
-    query = from pa in ProductAvailability,
-                 order_by: [desc: :in_stock, asc: :sku],
-                 select: pa
+    query =
+      from pa in ProductAvailability,
+        order_by: [desc: :in_stock, asc: :sku],
+        select: pa
 
     Repo.all(query)
   end

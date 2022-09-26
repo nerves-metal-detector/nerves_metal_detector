@@ -87,7 +87,7 @@ defmodule NervesMetalDetector.Inventory.Data.Products.Rpi do
   @rpi_cm4 (for w <- ["0", "1"],
                 r <- ["01", "02", "04", "08"],
                 m <- ["000", "008", "016", "032"] do
-              %{
+              %Product{
                 sku: "CM4#{w}#{r}#{m}",
                 name: "RPi CM4 - #{@cm4_ram[r]}, #{@cm4_mmc_name[m]}, #{@cm4_wifi_name[w]}",
                 description:

@@ -16,14 +16,17 @@ defmodule NervesMetalDetectorWeb.PageController do
     # probably add product and vendor as virtual field to the schema and hydrate in context module
     items
     |> Enum.map(fn i ->
-      product = case Inventory.get_product_by_sku(i.sku) do
-        {:ok, product} -> product
-        _ -> nil
-      end
-      vendor = case Vendors.get_by_id(i.vendor) do
-        {:ok, vendor} -> vendor
-        _ -> nil
-      end
+      product =
+        case Inventory.get_product_by_sku(i.sku) do
+          {:ok, product} -> product
+          _ -> nil
+        end
+
+      vendor =
+        case Vendors.get_by_id(i.vendor) do
+          {:ok, vendor} -> vendor
+          _ -> nil
+        end
 
       Map.from_struct(i)
       |> Map.put(:product, product)
