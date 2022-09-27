@@ -1,5 +1,6 @@
 defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
   @vendors [
+    NervesMetalDetector.Inventory.Data.ProductUpdateItems.AdafruitUs,
     NervesMetalDetector.Inventory.Data.ProductUpdateItems.BerryBaseDe
   ]
 

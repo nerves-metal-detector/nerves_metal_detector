@@ -14,7 +14,7 @@ defmodule NervesMetalDetector.Vendors.BerryBaseDe do
   end
 
   defmodule ProductUpdate do
-    @enforce_keys [:url]
+    @enforce_keys [:url, :sku]
     defstruct [:url, :sku]
   end
 end
@@ -23,7 +23,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   for: NervesMetalDetector.Vendors.BerryBaseDe.ProductUpdate do
   alias NervesMetalDetector.Vendors.BerryBaseDe
 
-  def fetch_availability(%BerryBaseDe.ProductUpdate{url: url, sku: explicit_sku}) do
+  def fetch_availability(%BerryBaseDe.ProductUpdate{url: url, sku: sku}) do
     with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
            {:load_body, HTTPoison.get(url, [], follow_redirect: true)},
          {:parse_document, parsed} when parsed not in [nil, []] <-
@@ -33,25 +33,18 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
          {:parse_currency, currency} when not is_nil(currency) <-
            {:parse_currency, parse_currency(buybox)},
          {:parse_price, price} when not is_nil(price) <- {:parse_price, parse_price(buybox)},
-         {:parse_sku, sku} when not is_nil(sku) <- {:parse_sku, parse_sku(parsed)},
          {:parse_item_url, item_url} when not is_nil(item_url) <-
            {:parse_item_url, parse_item_url(parsed)},
          {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(buybox)},
          {:parse_items_in_stock, items_in_stock} <-
            {:parse_items_in_stock, parse_items_in_stock(buybox)} do
-      sku =
-        case explicit_sku do
-          nil -> sku
-          value -> value
-        end
-
       data = %{
         sku: sku,
         vendor: BerryBaseDe.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
         items_in_stock: items_in_stock,
-        price: Money.new(String.to_atom(currency), price)
+        price: Money.new!(String.to_atom(currency), price)
       }
 
       {:ok, data}
@@ -71,10 +64,6 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
 
   defp parse_price(html_tree) do
     Floki.find(html_tree, "[itemprop=price]") |> Floki.attribute("content") |> Enum.at(0)
-  end
-
-  defp parse_sku(html_tree) do
-    Floki.find(html_tree, "[itemprop=sku]") |> Floki.attribute("content") |> Enum.at(0)
   end
 
   defp parse_item_url(html_tree) do

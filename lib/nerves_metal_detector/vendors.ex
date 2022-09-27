@@ -4,6 +4,7 @@ defmodule NervesMetalDetector.Vendors do
   alias NervesMetalDetector.Vendors
 
   @vendors [
+    Vendors.AdafruitUs,
     Vendors.BerryBaseDe
   ]
 

@@ -16,7 +16,7 @@ defmodule NervesMetalDetector.Inventory do
   def list_product_availabilities() do
     query =
       from pa in ProductAvailability,
-        order_by: [desc: :in_stock, asc: :sku],
+        order_by: [desc: :in_stock, asc: :sku, asc: :vendor],
         select: pa
 
     Repo.all(query)

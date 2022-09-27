@@ -62,13 +62,14 @@ defmodule NervesMetalDetector.InventoryTest do
       item
     end
 
-    test "list_product_availabilities/0 lists all items sorted by :in_stock and :sku" do
+    test "list_product_availabilities/0 lists all items sorted by :in_stock, :sku and :vendor" do
       item1 = product_availability_fixture("sku1", "vendor", in_stock: false)
       item2 = product_availability_fixture("sku2", "vendor", in_stock: true)
       item3 = product_availability_fixture("sku3", "vendor", in_stock: false)
-      item4 = product_availability_fixture("sku4", "vendor", in_stock: true)
+      item4 = product_availability_fixture("sku4", "vendor2", in_stock: true)
+      item5 = product_availability_fixture("sku4", "vendor1", in_stock: true)
 
-      assert [^item2, ^item4, ^item1, ^item3] = Inventory.list_product_availabilities()
+      assert [^item2, ^item5, ^item4, ^item1, ^item3] = Inventory.list_product_availabilities()
     end
 
     test "store_product_availability/1 upserts the given arguments into the database" do
