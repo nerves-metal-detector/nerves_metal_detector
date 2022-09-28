@@ -32,19 +32,23 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.PimoroniUk do
 
     # RPi CM4
     %ProductUpdate{
-      url: "https://shop.pimoroni.com/products/raspberry-pi-compute-module-4?variant=32280530813011",
+      url:
+        "https://shop.pimoroni.com/products/raspberry-pi-compute-module-4?variant=32280530813011",
       sku: "CM4104000"
     },
     %ProductUpdate{
-      url: "https://shop.pimoroni.com/products/raspberry-pi-compute-module-4?variant=32280530911315",
+      url:
+        "https://shop.pimoroni.com/products/raspberry-pi-compute-module-4?variant=32280530911315",
       sku: "CM4104032"
     },
     %ProductUpdate{
-      url: "https://shop.pimoroni.com/products/raspberry-pi-compute-module-4?variant=32280531075155",
+      url:
+        "https://shop.pimoroni.com/products/raspberry-pi-compute-module-4?variant=32280531075155",
       sku: "CM4001000"
     },
     %ProductUpdate{
-      url: "https://shop.pimoroni.com/products/raspberry-pi-compute-module-4?variant=32280531173459",
+      url:
+        "https://shop.pimoroni.com/products/raspberry-pi-compute-module-4?variant=32280531173459",
       sku: "CM4001032"
     },
 
