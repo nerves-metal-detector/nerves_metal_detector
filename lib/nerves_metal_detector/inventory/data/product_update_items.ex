@@ -1,10 +1,13 @@
 defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
-  @vendors [
-    NervesMetalDetector.Inventory.Data.ProductUpdateItems.AdafruitUs,
-    NervesMetalDetector.Inventory.Data.ProductUpdateItems.BerryBaseDe
+  alias NervesMetalDetector.Inventory.Data.ProductUpdateItems
+
+  @collections [
+    ProductUpdateItems.AdafruitUs,
+    ProductUpdateItems.BerryBaseDe,
+    ProductUpdateItems.PimoroniUk
   ]
 
-  @items @vendors |> Enum.map(& &1.all()) |> List.flatten()
+  @items @collections |> Enum.map(& &1.all()) |> List.flatten()
 
   def all(), do: @items
 end
