@@ -1,0 +1,243 @@
+# RpiLocator ProductUpdate Items by Vendor
+
+```elixir
+Mix.install([
+  {:httpoison, "~> 1.8"},
+  {:floki, "~> 0.33.1"},
+  {:jason, "~> 1.4"},
+  {:kino, "~> 0.6.2"}
+])
+
+defmodule ProductUpdate do
+  defstruct [:url, :sku]
+end
+
+defmodule NMD.RpiLocatorProductsByVendorGenerator do
+  use Kino.JS
+  use Kino.JS.Live
+  use Kino.SmartCell, name: "RpiLocator Products by Vendor"
+
+  @impl true
+  def init(attrs, ctx) do
+    ctx =
+      assign(ctx,
+        vendor: attrs["vendor"] || "",
+        vendors: vendor_list(),
+        items: []
+      )
+
+    {:ok, ctx}
+  end
+
+  @impl true
+  def handle_connect(ctx) do
+    {:ok, %{vendor: ctx.assigns.vendor, vendors: ctx.assigns.vendors}, ctx}
+  end
+
+  @impl true
+  def handle_event("update_vendor", vendor, ctx) do
+    broadcast_event(ctx, "update_vendor", vendor)
+    items = item_list(vendor)
+    {:noreply, assign(ctx, vendor: vendor, items: items)}
+  end
+
+  @impl true
+  def to_attrs(ctx) do
+    %{"vendor" => ctx.assigns.vendor, "items" => ctx.assigns.items}
+  end
+
+  @impl true
+  def to_source(attrs) do
+    quote do
+      unquote(attrs["items"])
+    end
+    |> Kino.SmartCell.quoted_to_string()
+  end
+
+  asset "main.js" do
+    """
+    export function init(ctx, payload) {
+      ctx.importCSS("main.css");
+      root.innerHTML = `
+        <div class="app">
+          <label class="label">Select Vendor</label>
+          <select class="input" name="vendor" id="vendor">
+            <option value=""></option>
+          </select>
+          <div class="label">And execute the cell</div>
+        </div>
+      `;
+
+      const selectEl = document.getElementById("vendor");
+
+      payload.vendors.forEach((v) => {
+        const option = document.createElement("option");
+        option.text = v.label;
+        option.value = v.value;
+        selectEl.add(option)
+      });
+
+      selectEl.value = payload.vendor;
+
+      ctx.handleEvent("update_vendor", (vendor) => {
+        selectEl.value = vendor;
+      });
+
+      selectEl.addEventListener("change", (event) => {
+        ctx.pushEvent("update_vendor", event.target.value);
+      });
+
+      ctx.handleSync(() => {
+        // Synchronously invokes change listeners
+        document.activeElement &&
+          document.activeElement.dispatchEvent(new Event("change"));
+      });
+    }
+    """
+  end
+
+  asset "main.css" do
+    """
+    .app {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background-color: #ecf0ff;
+      padding: 8px 16px;
+      border: solid 1px #cad5e0;
+      border-radius: 0.5rem;
+    }
+
+    .label {
+      font-size: 0.875rem;
+      font-weight: bold;
+      color: #445668;
+      text-transform: uppercase;
+    }
+
+    .input {
+      padding: 8px 12px;
+      background-color: #f8fafc;
+      font-size: 0.875rem;
+      border: 1px solid #e1e8f0;
+      border-radius: 0.5rem;
+      color: #445668;
+      min-width: 150px;
+    }
+
+    .input:focus {
+      outline: none;
+    }
+    """
+  end
+
+  defp vendor_list() do
+    {:ok, %{body: body}} = HTTPoison.get("https://rpilocator.com")
+    parsed = Floki.parse_document!(body)
+
+    selector = "#navbarSupportedContent > ul > li:nth-child(1) > ul > div > div li a.filter-list"
+
+    Floki.find(parsed, selector)
+    |> Enum.map(fn i ->
+      value = Floki.attribute(i, "data-vendor") |> Enum.at(0)
+      label = Floki.text(i)
+
+      %{
+        label: label,
+        value: value
+      }
+    end)
+    |> Enum.filter(&(&1.value !== ""))
+  end
+
+  defp item_list(vendor) do
+    scrape_url = "https://rpilocator.com/?vendor=#{vendor}"
+
+    {:ok, %{body: body, headers: headers}} = HTTPoison.get(scrape_url)
+
+    parsed = Floki.parse_document!(body)
+
+    info =
+      Floki.find(parsed, "script[type=\"text/javascript\"]")
+      |> Enum.at(1)
+      |> Floki.children()
+      |> Floki.text()
+
+    [_, localToken] = Regex.run(~r/localToken="([[:alnum:]]+)"/, info)
+    [_, queryFilter] = Regex.run(~r/queryFilter="([[:alnum:]|=]*)"/, info)
+
+    ts = System.os_time(:second) * 1000
+
+    url =
+      "https://rpilocator.com/data.cfm?method=getProductTable&token=#{localToken}&#{queryFilter}&_=#{ts}"
+
+    cookies =
+      headers
+      |> Enum.filter(fn
+        {"set-cookie", _} -> true
+        _ -> false
+      end)
+      |> Enum.map(&parse_cookie_from_header/1)
+
+    options =
+      case cookies do
+        nil ->
+          []
+
+        cookies ->
+          cookies_formatted =
+            cookies
+            |> Enum.map(&format_cookie/1)
+            |> Enum.join("; ")
+
+          [hackney: [cookie: [cookies_formatted]]]
+      end
+
+    headers = [
+      {"Accept", "application/json, text/javascript, */*; q=0.01"},
+      {"X-Requested-With", "XMLHttpRequest"}
+    ]
+
+    {:ok, %{body: body, status_code: 200}} = HTTPoison.get(url, headers, options)
+    parsed_body = Jason.decode!(body)
+
+    parsed_body["data"]
+    |> Enum.map(fn item ->
+      %ProductUpdate{sku: item["sku"], url: item["link"]}
+    end)
+  end
+
+  def parse_cookie_from_header({"set-cookie", cookie_string}) do
+    [name_value | _] = String.split(cookie_string, ";")
+    [name, value] = String.split(name_value, "=", parts: 2)
+
+    {name, value}
+  end
+
+  def format_cookie({name, value}) do
+    name <> "=" <> value
+  end
+end
+
+Kino.SmartCell.register(NMD.RpiLocatorProductsByVendorGenerator)
+```
+
+## Item Generator
+
+Use the smart cell below to generate the `ProductUpdate` structs for the selected vendor based on the rpilocator.com data.
+
+The cell might "hang" after a vendor was selected which is totally fine. It is busy loading the data.
+
+#### Rate Limiting:
+
+rpilocator.com has rather aggressive rate limiting. If the cell was executed but no result is shown, then the rate limit was hit. Manually visiting rpilocator.com will show an error as well. Simply try again a minute later.
+
+#### Known Bugs
+
+* After executing the cell multiple times with different vendors, the "source view" of the cell contains broken Elixir code. Just copy the items from the normal cell output.
+
+<!-- livebook:{"attrs":{},"kind":"Elixir.NMD.RpiLocatorProductsByVendorGenerator","livebook_object":"smart_cell"} -->
+
+```elixir
+[]
+```
