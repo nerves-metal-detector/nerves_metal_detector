@@ -1,6 +1,6 @@
 name: Vendor request
 description: Request a vendor to be added
-title: [VENDOR REQUEST]: <Vendor name> (<vendor country>)
+title: "[VENDOR REQUEST]: <Vendor name> (<vendor country>)"
 labels: ["vendor-request"]
 
 body:
