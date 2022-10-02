@@ -1,0 +1,45 @@
+name: Vendor request
+description: Request a vendor to be added
+title: [VENDOR REQUEST]: <Vendor name> (<vendor country>)
+labels: ["vendor-request"]
+
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Vendor Name
+    validations:
+      required: true
+
+  - type: input
+    id: country
+    attributes:
+      label: Vendor Country
+      description: The country where the vendor ships from (2 digit country code)
+      placeholder: e.g. DE
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Vendor URL
+      description: The URL of the vendor homepage
+    validations:
+      required: true
+
+  - type: textarea
+    id: links
+    attributes:
+      label: Product Links
+      description: Providing a list of products will speed up the process. Does not have to be complete. Links to listing pages work as well.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional information
+      description: Any other information that could be helpful
+    validations:
+      required: false
