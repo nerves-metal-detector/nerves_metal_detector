@@ -24,8 +24,22 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   alias NervesMetalDetector.Vendors.BerryBaseDe
 
   def fetch_availability(%BerryBaseDe.ProductUpdate{url: url, sku: sku}) do
+    options = [
+      follow_redirect: true,
+      ssl: [
+        {:versions, :ssl.versions()[:supported]},
+        {:verify, :verify_peer},
+        {:cacertfile, :certifi.cacertfile()},
+        {:verify_fun, &:ssl_verify_hostname.verify_fun/3},
+        {:customize_hostname_check,
+         [
+           match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
+         ]}
+      ]
+    ]
+
     with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
-           {:load_body, HTTPoison.get(url, [], follow_redirect: true)},
+           {:load_body, HTTPoison.get(url, [], options)},
          {:parse_document, parsed} when parsed not in [nil, []] <-
            {:parse_document, Floki.parse_document!(body)},
          {:parse_buybox, buybox} when buybox not in [nil, []] <-

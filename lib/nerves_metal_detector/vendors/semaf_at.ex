@@ -24,10 +24,24 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   alias NervesMetalDetector.Vendors.SemafAt
 
   def fetch_availability(%SemafAt.ProductUpdate{url: url, sku: sku}) do
+    options = [
+      follow_redirect: true,
+      ssl: [
+        {:versions, :ssl.versions()[:supported]},
+        {:verify, :verify_peer},
+        {:cacertfile, :certifi.cacertfile()},
+        {:verify_fun, &:ssl_verify_hostname.verify_fun/3},
+        {:customize_hostname_check,
+         [
+           match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
+         ]}
+      ]
+    ]
+
     # Semaf has "application/ld+json" data but in a wrong encoding and Jason cannot parse it,
     # so we parse the HTML instead.
     with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
-           {:load_body, HTTPoison.get(url, [], follow_redirect: true)},
+           {:load_body, HTTPoison.get(url, [], options)},
          {:parse_document, parsed} when parsed not in [nil, []] <-
            {:parse_document, Floki.parse_document!(body)},
          {:parse_product_offer, product_offer} when product_offer not in [nil, []] <-
