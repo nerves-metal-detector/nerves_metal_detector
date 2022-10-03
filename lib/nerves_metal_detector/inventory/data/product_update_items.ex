@@ -4,7 +4,8 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
   @collections [
     ProductUpdateItems.AdafruitUs,
     ProductUpdateItems.BerryBaseDe,
-    ProductUpdateItems.PimoroniUk
+    ProductUpdateItems.PimoroniUk,
+    ProductUpdateItems.SemafAt
   ]
 
   @items @collections |> Enum.map(& &1.all()) |> List.flatten()

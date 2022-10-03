@@ -6,7 +6,8 @@ defmodule NervesMetalDetector.Vendors do
   @vendors [
     Vendors.AdafruitUs,
     Vendors.BerryBaseDe,
-    Vendors.PimoroniUk
+    Vendors.PimoroniUk,
+    Vendors.SemafAt
   ]
 
   @vendor_items @vendors |> Enum.map(& &1.vendor_info())

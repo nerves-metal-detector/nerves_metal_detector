@@ -132,3 +132,5 @@ if the collection follows the same structure as the existing ones.
 
 For better organisation, please structure the list in the same way as the existing ones
 where the items are separated into different product groups like `RPi 3`, `RPi 4`, `RPi CM4`.
+
+Also, please remove any additional query params that were added by Rpilocator.
