@@ -9,6 +9,7 @@ Mix.install([
 ])
 
 defmodule ProductUpdate do
+  @derive Jason.Encoder
   defstruct [:url, :sku]
 end
 
@@ -231,10 +232,6 @@ The cell might "hang" after a vendor was selected which is totally fine. It is b
 #### Rate Limiting:
 
 rpilocator.com has rather aggressive rate limiting. If the cell was executed but no result is shown, then the rate limit was hit. Manually visiting rpilocator.com will show an error as well. Simply try again a minute later.
-
-#### Known Bugs
-
-* After executing the cell multiple times with different vendors, the "source view" of the cell contains broken Elixir code. Just copy the items from the normal cell output.
 
 <!-- livebook:{"attrs":{},"kind":"Elixir.NMD.RpiLocatorProductsByVendorGenerator","livebook_object":"smart_cell"} -->
 
