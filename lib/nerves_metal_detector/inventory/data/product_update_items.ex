@@ -4,6 +4,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
   @collections [
     ProductUpdateItems.AdafruitUs,
     ProductUpdateItems.BerryBaseDe,
+    ProductUpdateItems.McHobbyBe,
     ProductUpdateItems.PimoroniUk,
     ProductUpdateItems.SemafAt
   ]
