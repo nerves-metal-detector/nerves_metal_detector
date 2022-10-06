@@ -9,6 +9,7 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.McHobbyBe,
     Vendors.PimoroniUk,
     Vendors.PiShopCa,
+    Vendors.PiShopUs,
     Vendors.SemafAt
   ]
 
