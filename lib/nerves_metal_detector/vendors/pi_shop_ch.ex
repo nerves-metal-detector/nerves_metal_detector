@@ -9,7 +9,7 @@ defmodule NervesMetalDetector.Vendors.PiShopCh do
       id: "pishopch",
       name: "Pi-Shop",
       country: :ch,
-      homepage: "https://www.pi-shop.ch/"
+      homepage: "https://www.pi-shop.ch"
     }
   end
 
