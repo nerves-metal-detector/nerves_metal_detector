@@ -1,29 +1,27 @@
-defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.AdafruitUs do
-  alias NervesMetalDetector.Vendors.AdafruitUs.ProductUpdate
+defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.RasppishopDe do
+  alias NervesMetalDetector.Vendors.RasppishopDe.ProductUpdate
 
   @items [
-    # RPi 3
-    %ProductUpdate{url: "https://www.adafruit.com/product/3775", sku: "RPI3-MODBP"},
-
-    # RPi CM3
-    %ProductUpdate{url: "https://www.adafruit.com/product/4093", sku: "CM3+Lite"},
-    %ProductUpdate{url: "https://www.adafruit.com/product/4094", sku: "CM3+8GB"},
-
     # RPi 4
-    %ProductUpdate{url: "https://www.adafruit.com/product/4292", sku: "RPI4-MODBP-2GB"},
-    %ProductUpdate{url: "https://www.adafruit.com/product/4295", sku: "RPI4-MODBP-1GB"},
-    %ProductUpdate{url: "https://www.adafruit.com/product/4296", sku: "RPI4-MODBP-4GB"},
-    %ProductUpdate{url: "https://www.adafruit.com/product/4564", sku: "RPI4-MODBP-8GB"},
-
-    # RPi CM4
-    %ProductUpdate{url: "https://www.adafruit.com/product/4782", sku: "CM4001000"},
-    %ProductUpdate{url: "https://www.adafruit.com/product/4788", sku: "CM4102000"},
-    %ProductUpdate{url: "https://www.adafruit.com/product/4790", sku: "CM4102008"},
-    %ProductUpdate{url: "https://www.adafruit.com/product/4791", sku: "CM4102016"},
-    %ProductUpdate{url: "https://www.adafruit.com/product/4982", sku: "CM4104032"},
+    %ProductUpdate{
+      url: "https://www.rasppishop.de/Raspberry-Pi-4-Modell-B-2GB-SDRAM",
+      sku: "RPI4-MODBP-2GB"
+    },
+    %ProductUpdate{
+      url: "https://www.rasppishop.de/Raspberry-Pi-4-Modell-B-1GB-SDRAM",
+      sku: "RPI4-MODBP-1GB"
+    },
+    %ProductUpdate{
+      url: "https://www.rasppishop.de/Raspberry-Pi-4-Modell-B-4GB-SDRAM",
+      sku: "RPI4-MODBP-4GB"
+    },
+    %ProductUpdate{
+      url: "https://www.rasppishop.de/Raspberry-Pi-4-Computer-Modell-B-8GB-SDRAM",
+      sku: "RPI4-MODBP-8GB"
+    },
 
     # RPi Zero 2
-    %ProductUpdate{url: "https://www.adafruit.com/product/5291", sku: "SC0510"}
+    %ProductUpdate{url: "https://www.rasppishop.de/Raspberry-Pi-Zero-2-W", sku: "SC0510"}
   ]
 
   def all(), do: @items

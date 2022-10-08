@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.PimoroniUk do
+defmodule NervesMetalDetector.Vendors.RasppishopDe do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -6,10 +6,10 @@ defmodule NervesMetalDetector.Vendors.PimoroniUk do
   @impl Vendor
   def vendor_info() do
     %Vendor{
-      id: "pimoroniuk",
-      name: "Pimoroni",
-      country: :uk,
-      homepage: "https://shop.pimoroni.com"
+      id: "rasppishopde",
+      name: "Rasppishop",
+      country: :de,
+      homepage: "https://www.rasppishop.de"
     }
   end
 
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.PimoroniUk do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.PimoroniUk.ProductUpdate do
-  alias NervesMetalDetector.Vendors.PimoroniUk
+  for: NervesMetalDetector.Vendors.RasppishopDe.ProductUpdate do
+  alias NervesMetalDetector.Vendors.RasppishopDe
 
-  def fetch_availability(%PimoroniUk.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%RasppishopDe.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -52,7 +52,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
          {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info)} do
       data = %{
         sku: sku,
-        vendor: PimoroniUk.vendor_info().id,
+        vendor: RasppishopDe.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
         items_in_stock: nil,
@@ -89,15 +89,12 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_item_url(json_info) do
-    case get_in(json_info, ["offers", Access.at(0), "url"]) do
-      nil -> nil
-      url -> Path.join(PimoroniUk.vendor_info().homepage, url)
-    end
+    get_in(json_info, ["url"])
   end
 
   defp parse_in_stock(json_info) do
     case get_in(json_info, ["offers", Access.at(0), "availability"]) do
-      "http://schema.org/InStock" -> true
+      "https://schema.org/InStock" -> true
       _ -> false
     end
   end
