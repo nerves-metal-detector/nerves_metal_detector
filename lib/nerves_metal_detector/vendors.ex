@@ -11,6 +11,7 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.PiShopCa,
     Vendors.PiShopCh,
     Vendors.PiShopUs,
+    Vendors.SeeedStudioCn,
     Vendors.SemafAt
   ]
 
