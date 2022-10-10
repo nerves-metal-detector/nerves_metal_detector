@@ -9,7 +9,7 @@ defmodule NervesMetalDetector.Vendors.SparkfunUs do
       id: "sparkfunus",
       name: "Sparkfun",
       country: :us,
-      homepage: "https://www.sparkfun.com/"
+      homepage: "https://www.sparkfun.com"
     }
   end
 
@@ -38,35 +38,36 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
       ]
     ]
 
+
     with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
            {:load_body, HTTPoison.get(url, [], options)},
          {:parse_document, parsed} when parsed not in [nil, []] <-
            {:parse_document, Floki.parse_document!(body)},
-         {:parse_product, product} when product not in [nil, []] <-
-           {:parse_product, parse_product(parsed)},
+         {:parse_product_offer, product_offer} when product_offer not in [nil, []] <-
+           {:parse_product_offer, parse_product_offer(parsed)},
          {:parse_currency, currency} when not is_nil(currency) <-
-           {:parse_currency, parse_currency(product)},
+           {:parse_currency, parse_currency(product_offer)},
          {:parse_price, price} when not is_nil(price) <-
-           {:parse_price, parse_price(product)},
+           {:parse_price, parse_price(product_offer)},
          {:parse_item_url, item_url} when not is_nil(item_url) <-
-         {:parse_item_url, parse_item_url(parsed)} do
-        #    {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(product)} do
+         {:parse_item_url, parse_item_url(parsed)},
+           {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(product_offer)} do
       data = %{
-        # sku: sku,
-        # vendor: SparkfunUs.vendor_info().id,
-        # url: item_url,
-        # in_stock: in_stock,
-        # items_in_stock: nil,
-        # price: Money.new!(String.to_atom(currency), price)
+        sku: sku,
+        vendor: SparkfunUs.vendor_info().id,
+        url: item_url,
+        in_stock: in_stock,
+        items_in_stock: nil,
+        price: Money.new!(String.to_atom(currency), price)
 
         ## OLD STUFF ABOVE ##
 
-        sku: sku,
-        vendor: SparkfunUs.vendor_info().id,
-        url: "https://google.com",
-        in_stock: false,
-        items_in_stock: nil,
-        price: Money.new!(String.to_atom("USD"), "12")
+        # sku: sku,
+        # vendor: SparkfunUs.vendor_info().id,
+        # url: item_url,
+        # in_stock: false,
+        # items_in_stock: nil,
+        # price: Money.new!(String.to_atom("USD"), "12")
       }
 
       {:ok, data}
@@ -76,9 +77,10 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     end
   end
 
-  defp parse_product(html_tree) do
-    Floki.find(html_tree, "[itemtype=\"http://schema.org/Offer\"]")
+  defp parse_product_offer(html_tree) do
+    Floki.find(html_tree, "[itemprop=offers]")
   end
+
 
   defp parse_currency(html_tree) do
     Floki.find(html_tree, "[itemprop=priceCurrency]") |> Floki.attribute("content") |> Enum.at(0)
@@ -95,28 +97,44 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     |> Enum.at(0)
   end
 
-#   defp parse_in_stock(html_tree) do
-#     availability =
-#       Floki.find(html_tree, "[itemprop=availability]")
-#       |> Floki.attribute("content")
-#       |> Enum.at(0)
+  defp parse_in_stock(html_tree) do
+    availability =
+      Floki.find(html_tree, "[itemprop=availability]")
+      |> Floki.attribute("content")
+      |> Enum.at(0)
 
-#     case availability do
-#       "http://schema.org/InStock" -> true
-#       _ -> false
+    case availability do
+      "http://schema.org/InStock" -> true
+      _ -> false
     end
-#   end
-# end
+  end
+end
 
 
 
 
 
-#Ecto.Changeset<action: :insert, changes: %{fetched_at: ~U[2022-10-10 01:00:40Z], 
-# sku: "RPI3-MODBP", vendor: "sparkfunus"}, 
-# errors: [url: {"is invalid", [type: :string, validation: :cast]}, 
-# in_stock: {"is invalid", [type: :boolean, validation: :cast]}, 
-# price: {"is invalid", [type: {:parameterized, Money.Ecto.Composite.Type, []}, validation: :cast]}], 
-# data: #NervesMetalDetector.Inventory.ProductAvailability<>, valid?: false>
+# Mix.install([
+#   {:httpoison, "~> 1.8"},
+#   {:floki, "~> 0.33.1"},
+#   {:jason, "~> 1.4"},
+# ])
 
 
+# {:ok, %{body: body}} = HTTPoison.get("https://www.sparkfun.com/products/18713")
+#     parsed = Floki.parse_document!(body)
+
+
+# ben = Floki.find(parsed, "[itemprop=offers]")
+
+
+# Floki.find(ben, "[itemprop=priceCurrency]") |> Floki.attribute("content") |> Enum.at(0)
+
+
+# Floki.find(ben, "[itemprop=price]") |> Floki.attribute("content") |> Enum.at(0)
+
+
+# Floki.find(ben, "[rel=canonical]")
+#     |> Enum.at(0)
+#     |> Floki.attribute("href")
+#     |> Enum.at(0)
