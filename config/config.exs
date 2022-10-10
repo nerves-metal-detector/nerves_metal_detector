@@ -55,7 +55,8 @@ config :nerves_metal_detector, Oban,
     Oban.Plugins.Pruner,
     {Oban.Plugins.Cron,
      crontab: [
-       {"0 * * * *", NervesMetalDetector.Jobs.ScheduleProductUpdates}
+       {"*/1 * * * *", NervesMetalDetector.Jobs.ScheduleProductUpdates}
+      #  {"0 * * * *", NervesMetalDetector.Jobs.ScheduleProductUpdates}
      ]}
   ]
 
