@@ -6,7 +6,10 @@ defmodule NervesMetalDetector.Vendors do
   @vendors [
     Vendors.AdafruitUs,
     Vendors.BerryBaseDe,
+    Vendors.BuyzeroDe,
+    Vendors.KubiiFr,
     Vendors.McHobbyBe,
+    Vendors.MeloperoIt,
     Vendors.PimoroniUk,
     Vendors.PiShopCa,
     Vendors.PiShopCh,
@@ -14,7 +17,9 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.RasppishopDe,
     Vendors.ReicheltDe,
     Vendors.SeeedStudioCn,
-    Vendors.SemafAt
+    Vendors.SemafAt,
+    Vendors.TiendatecEs,
+    Vendors.WelectronDe
   ]
 
   @vendor_items @vendors |> Enum.map(& &1.vendor_info())
