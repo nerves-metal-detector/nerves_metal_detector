@@ -7,6 +7,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
     ProductUpdateItems.BuyzeroDe,
     ProductUpdateItems.KubiiFr,
     ProductUpdateItems.McHobbyBe,
+    ProductUpdateItems.MeloperoIt,
     ProductUpdateItems.PimoroniUk,
     ProductUpdateItems.PiShopCa,
     ProductUpdateItems.PiShopCh,
