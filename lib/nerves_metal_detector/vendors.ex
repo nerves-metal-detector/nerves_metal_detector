@@ -6,6 +6,7 @@ defmodule NervesMetalDetector.Vendors do
   @vendors [
     Vendors.AdafruitUs,
     Vendors.BerryBaseDe,
+    Vendors.BuyzeroDe,
     Vendors.McHobbyBe,
     Vendors.PimoroniUk,
     Vendors.PiShopCa,
