@@ -14,7 +14,8 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.RasppishopDe,
     Vendors.ReicheltDe,
     Vendors.SeeedStudioCn,
-    Vendors.SemafAt
+    Vendors.SemafAt,
+    Vendors.WelectronDe
   ]
 
   @vendor_items @vendors |> Enum.map(& &1.vendor_info())
