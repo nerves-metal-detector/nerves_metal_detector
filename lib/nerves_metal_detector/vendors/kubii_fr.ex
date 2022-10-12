@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.SparkfunUs do
+defmodule NervesMetalDetector.Vendors.KubiiFr do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -6,10 +6,10 @@ defmodule NervesMetalDetector.Vendors.SparkfunUs do
   @impl Vendor
   def vendor_info() do
     %Vendor{
-      id: "sparkfunus",
-      name: "Sparkfun",
-      country: :us,
-      homepage: "https://www.sparkfun.com"
+      id: "kubiifr",
+      name: "Kubii",
+      country: :fr,
+      homepage: "https://www.kubii.fr"
     }
   end
 
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.SparkfunUs do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.SparkfunUs.ProductUpdate do
-  alias NervesMetalDetector.Vendors.SparkfunUs
+  for: NervesMetalDetector.Vendors.KubiiFr.ProductUpdate do
+  alias NervesMetalDetector.Vendors.KubiiFr
 
-  def fetch_availability(%SparkfunUs.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%KubiiFr.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -38,8 +38,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
       ]
     ]
 
-
-  with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
+    with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
            {:load_body, HTTPoison.get(url, [], options)},
          {:parse_document, parsed} when parsed not in [nil, []] <-
            {:parse_document, Floki.parse_document!(body)},
@@ -54,7 +53,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
          {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(product)} do
       data = %{
         sku: sku,
-        vendor: SparkfunUs.vendor_info().id,
+        vendor: KubiiFr.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
         items_in_stock: nil,
@@ -69,7 +68,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_product(html_tree) do
-    Floki.find(html_tree, "[itemtype=\"http://schema.org/Product\"]")
+    Floki.find(html_tree, "[itemtype=\"https://schema.org/Product\"]")
   end
 
   defp parse_currency(html_tree) do
@@ -88,43 +87,12 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_in_stock(html_tree) do
-    availability =
-      Floki.find(html_tree, "[itemprop=availability]")
-      |> Floki.attribute("content")
-      |> Enum.at(0)
+    text =
+      Floki.find(html_tree, "#availability_statut")
+      |> Floki.text()
+      |> String.trim()
+      |> String.downcase()
 
-    case availability do
-      "http://schema.org/InStock" -> true
-      _ -> false
-    end
+    String.contains?(text, "en stock")
   end
 end
-
-
-
-
-
-# Mix.install([
-#   {:httpoison, "~> 1.8"},
-#   {:floki, "~> 0.33.1"},
-#   {:jason, "~> 1.4"},
-# ])
-
-
-# {:ok, %{body: body}} = HTTPoison.get("https://www.sparkfun.com/products/18713")
-#     parsed = Floki.parse_document!(body)
-
-
-# ben = Floki.find(parsed, "[itemprop=offers]")
-
-
-# Floki.find(ben, "[itemprop=priceCurrency]") |> Floki.attribute("content") |> Enum.at(0)
-
-
-# Floki.find(ben, "[itemprop=price]") |> Floki.attribute("content") |> Enum.at(0)
-
-
-# Floki.find(ben, "[rel=canonical]")
-#     |> Enum.at(0)
-#     |> Floki.attribute("href")
-#     |> Enum.at(0)
