@@ -38,7 +38,6 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
       ]
     ]
 
-
   with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
            {:load_body, HTTPoison.get(url, [], options)},
          {:parse_document, parsed} when parsed not in [nil, []] <-
@@ -99,32 +98,3 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     end
   end
 end
-
-
-
-
-
-# Mix.install([
-#   {:httpoison, "~> 1.8"},
-#   {:floki, "~> 0.33.1"},
-#   {:jason, "~> 1.4"},
-# ])
-
-
-# {:ok, %{body: body}} = HTTPoison.get("https://www.sparkfun.com/products/18713")
-#     parsed = Floki.parse_document!(body)
-
-
-# ben = Floki.find(parsed, "[itemprop=offers]")
-
-
-# Floki.find(ben, "[itemprop=priceCurrency]") |> Floki.attribute("content") |> Enum.at(0)
-
-
-# Floki.find(ben, "[itemprop=price]") |> Floki.attribute("content") |> Enum.at(0)
-
-
-# Floki.find(ben, "[rel=canonical]")
-#     |> Enum.at(0)
-#     |> Floki.attribute("href")
-#     |> Enum.at(0)
