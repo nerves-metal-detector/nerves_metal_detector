@@ -2,7 +2,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.SparkfunUs do
   alias NervesMetalDetector.Vendors.SparkfunUs.ProductUpdate
 
   @items [
-    #Rpi 3 
+    # Rpi 3 
     %ProductUpdate{sku: "RPI3-MODBP", url: "https://www.sparkfun.com/products/14643"},
 
     # Rpi 4

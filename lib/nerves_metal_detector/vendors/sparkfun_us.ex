@@ -38,7 +38,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
       ]
     ]
 
-  with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
+    with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
            {:load_body, HTTPoison.get(url, [], options)},
          {:parse_document, parsed} when parsed not in [nil, []] <-
            {:parse_document, Floki.parse_document!(body)},
