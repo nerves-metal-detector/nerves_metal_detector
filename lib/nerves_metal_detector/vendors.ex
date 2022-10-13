@@ -18,6 +18,7 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.ReicheltDe,
     Vendors.SeeedStudioCn,
     Vendors.SemafAt,
+    Vendors.SparkfunUs,
     Vendors.TiendatecEs,
     Vendors.WelectronDe
   ]
