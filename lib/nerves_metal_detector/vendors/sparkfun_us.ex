@@ -89,7 +89,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   defp parse_in_stock(html_tree) do
     availability =
       Floki.find(html_tree, "[itemprop=availability]")
-      |> Floki.attribute("content")
+      |> Floki.attribute("href")
       |> Enum.at(0)
 
     case availability do

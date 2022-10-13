@@ -16,9 +16,9 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
     ProductUpdateItems.ReicheltDe,
     ProductUpdateItems.SeeedStudioCn,
     ProductUpdateItems.SemafAt,
+    ProductUpdateItems.SparkfunUs,
     ProductUpdateItems.TiendatecEs,
-    ProductUpdateItems.WelectronDe,
-    ProductUpdateItems.SparkfunUs
+    ProductUpdateItems.WelectronDe
   ]
 
   @items @collections |> Enum.map(& &1.all()) |> List.flatten()
