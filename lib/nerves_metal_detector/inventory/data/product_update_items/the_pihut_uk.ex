@@ -1,5 +1,5 @@
-defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.ThePihutUk do
-  alias NervesMetalDetector.Vendors.ThePihutUk.ProductUpdate
+defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.ThePiHutUk do
+  alias NervesMetalDetector.Vendors.ThePiHutUk.ProductUpdate
 
   @items [
     # RPi 3

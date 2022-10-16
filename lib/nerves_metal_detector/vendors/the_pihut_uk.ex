@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.ThePihutUk do
+defmodule NervesMetalDetector.Vendors.ThePiHutUk do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.ThePihutUk do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.ThePihutUk.ProductUpdate do
-  alias NervesMetalDetector.Vendors.ThePihutUk
+  for: NervesMetalDetector.Vendors.ThePiHutUk.ProductUpdate do
+  alias NervesMetalDetector.Vendors.ThePiHutUk
 
-  def fetch_availability(%ThePihutUk.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%ThePiHutUk.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -45,14 +45,14 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
          {:parse_json_info, json_info} when json_info not in [%{}] <-
            {:parse_json_info, parse_json_info(parsed)},
          {:parse_currency, currency} when not is_nil(currency) <-
-           {:parse_currency, parse_currency(json_info)},
-         {:parse_price, price} when not is_nil(price) <- {:parse_price, parse_price(json_info)},
+           {:parse_currency, parse_currency(json_info, url)},
+         {:parse_price, price} when not is_nil(price) <- {:parse_price, parse_price(json_info, url)},
          {:parse_item_url, item_url} when not is_nil(item_url) <-
-           {:parse_item_url, parse_item_url(json_info)},
-         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info)} do
+           {:parse_item_url, parse_item_url(json_info, url)},
+         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info, url)} do
       data = %{
         sku: sku,
-        vendor: ThePihutUk.vendor_info().id,
+        vendor: ThePiHutUk.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
         items_in_stock: nil,
@@ -80,23 +80,35 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     |> Enum.reduce(&Map.merge(&2, &1))
   end
 
-  defp parse_currency(json_info) do
-    get_in(json_info, ["offers", Access.at(0), "priceCurrency"])
-  end
-
-  defp parse_price(json_info) do
-    get_in(json_info, ["offers", Access.at(0), "price"])
-  end
-
-  defp parse_item_url(json_info) do
-    case get_in(json_info, ["offers", Access.at(0), "url"]) do
-      nil -> nil
-      url -> Path.join(ThePihutUk.vendor_info().homepage, url)
+  def match_url(json_info, counter, url) do
+    if get_in(json_info, ["offers", Access.at(counter), "url"]) == url do
+      counter
+    else
+      if counter <= length(json_info["offers"]) do 
+        match_url(json_info, counter+1, url)
+      end
     end
   end
 
-  defp parse_in_stock(json_info) do
-    case get_in(json_info, ["offers", Access.at(0), "availability"]) do
+  def get_item_index(json_info, url) do   
+    counter = 0
+    match_url(json_info, counter, url)
+  end
+
+  defp parse_currency(json_info, url) do
+    get_in(json_info, ["offers", Access.at(get_item_index(json_info, url)), "priceCurrency"])
+  end
+
+  defp parse_price(json_info, url) do
+    get_in(json_info, ["offers", Access.at(get_item_index(json_info, url)), "price"])
+  end
+
+  defp parse_item_url(json_info, url) do
+    get_in(json_info, ["offers", Access.at(get_item_index(json_info, url)), "url"])
+  end
+
+  defp parse_in_stock(json_info, url) do
+    case get_in(json_info, ["offers", Access.at(get_item_index(json_info, url)), "availability"]) do
       "https://schema.org/InStock" -> true
       _ -> false
     end
