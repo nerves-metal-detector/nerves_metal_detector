@@ -44,12 +44,14 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
            {:parse_document, Floki.parse_document!(body)},
          {:parse_json_info, json_info} when json_info not in [%{}] <-
            {:parse_json_info, parse_json_info(parsed)},
+         {:find_offer, offer} when not is_nil(offer) <-
+           {:find_offer, find_offer(json_info, url)},
          {:parse_currency, currency} when not is_nil(currency) <-
-           {:parse_currency, parse_currency(json_info, url)},
-         {:parse_price, price} when not is_nil(price) <- {:parse_price, parse_price(json_info, url)},
+           {:parse_currency, parse_currency(offer)},
+         {:parse_price, price} when not is_nil(price) <- {:parse_price, parse_price(offer)},
          {:parse_item_url, item_url} when not is_nil(item_url) <-
-           {:parse_item_url, parse_item_url(json_info, url)},
-         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info, url)} do
+           {:parse_item_url, parse_item_url(offer)},
+         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(offer)} do
       data = %{
         sku: sku,
         vendor: ThePiHutUk.vendor_info().id,
@@ -80,35 +82,30 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     |> Enum.reduce(&Map.merge(&2, &1))
   end
 
-  def match_url(json_info, counter, url) do
-    if get_in(json_info, ["offers", Access.at(counter), "url"]) == url do
-      counter
+  defp find_offer(json_info, url) do
+    with offers when is_list(offers) <- json_info["offers"] do
+      Enum.find(offers, fn offer ->
+        offer["url"] == url
+      end)
     else
-      if counter <= length(json_info["offers"]) do 
-        match_url(json_info, counter+1, url)
-      end
+      _ -> nil
     end
   end
 
-  def get_item_index(json_info, url) do   
-    counter = 0
-    match_url(json_info, counter, url)
+  defp parse_currency(offer) do
+    offer["priceCurrency"]
   end
 
-  defp parse_currency(json_info, url) do
-    get_in(json_info, ["offers", Access.at(get_item_index(json_info, url)), "priceCurrency"])
+  defp parse_price(offer) do
+    offer["price"]
   end
 
-  defp parse_price(json_info, url) do
-    get_in(json_info, ["offers", Access.at(get_item_index(json_info, url)), "price"])
+  defp parse_item_url(offer) do
+    offer["url"]
   end
 
-  defp parse_item_url(json_info, url) do
-    get_in(json_info, ["offers", Access.at(get_item_index(json_info, url)), "url"])
-  end
-
-  defp parse_in_stock(json_info, url) do
-    case get_in(json_info, ["offers", Access.at(get_item_index(json_info, url)), "availability"]) do
+  defp parse_in_stock(offer) do
+    case offer["availability"] do
       "https://schema.org/InStock" -> true
       _ -> false
     end
