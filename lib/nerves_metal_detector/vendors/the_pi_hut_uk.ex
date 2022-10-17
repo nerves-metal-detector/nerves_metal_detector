@@ -9,7 +9,7 @@ defmodule NervesMetalDetector.Vendors.ThePiHutUk do
       id: "thepihutuk",
       name: "The PiHut",
       country: :uk,
-      homepage: "https://thepihut.com/"
+      homepage: "https://thepihut.com"
     }
   end
 
