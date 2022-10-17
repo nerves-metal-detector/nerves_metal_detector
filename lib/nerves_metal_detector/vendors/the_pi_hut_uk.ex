@@ -7,7 +7,7 @@ defmodule NervesMetalDetector.Vendors.ThePiHutUk do
   def vendor_info() do
     %Vendor{
       id: "thepihutuk",
-      name: "The Pihut",
+      name: "The PiHut",
       country: :uk,
       homepage: "https://thepihut.com/"
     }
