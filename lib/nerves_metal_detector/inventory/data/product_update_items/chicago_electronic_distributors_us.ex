@@ -8,7 +8,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.ChicagoElectroni
       sku: "RPI4-MODBP-2GB"
     },
     %ProductUpdate{
-      url: "https://chicagodist.com/collections/raspberry-pi/products/raspberry-pi-4-model-b-1gb",
+      url: "https://chicagodist.com/products/raspberry-pi-4-model-b-1gb",
       sku: "RPI4-MODBP-1GB"
     },
     %ProductUpdate{

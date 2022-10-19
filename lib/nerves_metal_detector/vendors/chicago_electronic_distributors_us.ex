@@ -106,12 +106,11 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
 
     if available_quantity != [] do
       json_product_data =
-        Floki.find(html_tree, ".product_form")
-        |> Floki.attribute("data-variant-inventory")
+        available_quantity
         |> Enum.at(0)
-        |> Jason.decode()
+        |> Jason.decode!()
 
-      get_in(elem(json_product_data, 1) |> Enum.at(0), ["inventory_quantity"])
+      Enum.at(json_product_data, 0)["inventory_quantity"]
     else
       nil
     end
