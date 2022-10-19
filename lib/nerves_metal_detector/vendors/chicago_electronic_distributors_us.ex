@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.ChicagoElecDistUs do
+defmodule NervesMetalDetector.Vendors.ChicagoElectronicDistributorsUs do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -6,10 +6,10 @@ defmodule NervesMetalDetector.Vendors.ChicagoElecDistUs do
   @impl Vendor
   def vendor_info() do
     %Vendor{
-      id: "chicagoelecdistus",
+      id: "chicagoelectronicdistributorsus",
       name: "Chicago Elec. Dist.",
       country: :us,
-      homepage: "https://chicagodist.com/"
+      homepage: "https://chicagodist.com"
     }
   end
 
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.ChicagoElecDistUs do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.ChicagoElecDistUs.ProductUpdate do
-  alias NervesMetalDetector.Vendors.ChicagoElecDistUs
+  for: NervesMetalDetector.Vendors.ChicagoElectronicDistributorsUs.ProductUpdate do
+  alias NervesMetalDetector.Vendors.ChicagoElectronicDistributorsUs
 
-  def fetch_availability(%ChicagoElecDistUs.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%ChicagoElectronicDistributorsUs.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -50,13 +50,15 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
            {:parse_price, parse_price(product)},
          {:parse_item_url, item_url} when not is_nil(item_url) <-
            {:parse_item_url, parse_item_url(parsed)},
-         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(product)} do
+         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(product)},
+         {:parse_items_in_stock, items_in_stock} <-
+           {:parse_items_in_stock, parse_items_in_stock(product)} do
       data = %{
         sku: sku,
-        vendor: ChicagoElecDistUs.vendor_info().id,
+        vendor: ChicagoElectronicDistributorsUs.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
-        items_in_stock: nil,
+        items_in_stock: items_in_stock,
         price: Money.new!(String.to_atom(currency), price)
       }
 
@@ -95,6 +97,23 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     case availability do
       "http://schema.org/InStock" -> true
       _ -> false
+    end
+  end
+
+  defp parse_items_in_stock(html_tree) do
+    available_quantity =
+      Floki.find(html_tree, ".product_form") |> Floki.attribute("data-variant-inventory")
+
+    if available_quantity != [] do
+      json_product_data =
+        Floki.find(html_tree, ".product_form")
+        |> Floki.attribute("data-variant-inventory")
+        |> Enum.at(0)
+        |> Jason.decode()
+
+      get_in(elem(json_product_data, 1) |> Enum.at(0), ["inventory_quantity"])
+    else
+      nil
     end
   end
 end

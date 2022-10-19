@@ -1,5 +1,5 @@
-defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.ChicagoElecDistUs do
-  alias NervesMetalDetector.Vendors.ChicagoElecDistUs.ProductUpdate
+defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.ChicagoElectronicDistributorsUs do
+  alias NervesMetalDetector.Vendors.ChicagoElectronicDistributorsUs.ProductUpdate
 
   @items [
     # RPi 4
