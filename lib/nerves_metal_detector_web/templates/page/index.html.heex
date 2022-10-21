@@ -1,28 +1,52 @@
 <section>
-  <h1>Nerves Metal Detector</h1>
+  <h1 class="text-3xl text-center mt-4 mb-4">Nerves Metal Detector</h1>
 
-  <table>
-    <tr>
-      <th>SKU</th>
-      <th>Name</th>
-      <th>Link</th>
-      <th>In Stock</th>
-      <th>Items In Stock</th>
-      <th>Price</th>
-      <th>Vendor</th>
-      <th>Last Checked (UTC)</th>
-    </tr>
-    <%= for pa <- @product_availabilities do %>
-    <tr class={[pa.in_stock && "in-stock"]}>
-      <td><%= pa.sku %></td>
-      <td><%= pa.product.name %></td>
-      <td><a href={pa.url} target="_blank">Open</a></td>
-      <td><%= if pa.in_stock, do: "Yes", else: "No" %></td>
-      <td><%= if pa.items_in_stock, do: pa.items_in_stock, else: "-" %></td>
-      <td><%= pa.price %></td>
-      <td><%= "#{pa.vendor.name} (#{pa.vendor.country |> Atom.to_string() |> String.upcase()})" %></td>
-      <td><%= NervesMetalDetector.Cldr.DateTime.to_string!(pa.fetched_at, format: "MMM dd, HH:mm") %></td>
-    </tr>
-    <% end %>
-  </table>
+  <div class="bg-white rounded-lg mb-2 overflow-hidden">
+    <table class="w-full">
+      <tr>
+        <th class="py-3 px-1.5 text-left font-medium">SKU</th>
+        <th class="py-3 px-1.5 text-left font-medium">Name</th>
+        <th class="py-3 px-1.5 text-left font-medium">In Stock (#)</th>
+        <th class="py-3 px-1.5 text-left font-medium">Price</th>
+        <th class="py-3 px-1.5 text-left font-medium">Vendor</th>
+        <th class="py-3 px-1.5 text-left font-medium">Updated (UTC)</th>
+        <th class="py-3 px-1.5 text-left font-medium">Link</th>
+      </tr>
+      <tr :for={pa <- @product_availabilities} class={["hover:bg-slate-100 text-slate-500",
+        pa.in_stock && "bg-blue-50 hover:bg-blue-100 !text-slate-900 border-x-8 border-x-blue-300"]}>
+        <td class="p-1.5"><%= pa.sku %></td>
+        <td class="p-1.5"><%= pa.product.name %></td>
+        <td class="p-1.5">
+          <span :if={pa.in_stock}>
+            <Heroicons.check :if={pa.in_stock} mini class="w-5 h-5 inline"/>
+            <span :if={pa.items_in_stock}><%= "(#{pa.items_in_stock})" %></span>
+          </span>
+          <Heroicons.x_mark :if={!pa.in_stock} mini class="w-5 h-5 inline"/>
+        </td>
+        <td class="p-1.5"><%= pa.price %></td>
+        <td class="p-1.5"><%= "#{pa.vendor.name} (#{pa.vendor.country |> Atom.to_string() |> String.upcase()})" %></td>
+        <td class="p-1.5"><%= NervesMetalDetector.Cldr.DateTime.to_string!(pa.fetched_at, format: "MMM dd, HH:mm") %></td>
+        <td class="p-1.5">
+          <a href={pa.url} target="_blank" class="hover:text-blue-500">
+            <Heroicons.arrow_top_right_on_square mini class="w-5 h-5 inline"/>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="bg-white rounded-lg mb-10 flex flex-row text-slate-900">
+    <div class="basis-1/3 text-center p-1.5 border-r-2 border-r-slate-100">
+      <div class="text-2xl"><%= @vendors_count %></div>
+      <div class="text-slate-500">Vendors</div>
+    </div>
+    <div class="basis-1/3 text-center p-1.5 border-r-2 border-r-slate-100">
+      <div class="text-2xl"><%= @products_count %></div>
+      <div class="text-slate-500">Products</div>
+    </div>
+    <div class="basis-1/3 text-center p-1.5">
+      <div class="text-2xl"><%= @items_count %></div>
+      <div class="text-slate-500">Items</div>
+    </div>
+  </div>
 </section>

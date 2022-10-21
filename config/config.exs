@@ -31,7 +31,7 @@ config :nerves_metal_detector, NervesMetalDetector.Mailer, adapter: Swoosh.Adapt
 config :swoosh, :api_client, false
 
 config :tailwind,
-  version: "3.1.8",
+  version: "3.2.0",
   default: [
     args: ~w(
         --config=tailwind.config.js
