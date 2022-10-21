@@ -9,7 +9,16 @@ defmodule NervesMetalDetectorWeb.PageController do
       Inventory.list_product_availabilities()
       |> hydrate_and_filter()
 
-    render(conn, "index.html", product_availabilities: product_availabilities)
+    vendors_count = Enum.count(Vendors.all())
+    products_count = Enum.count(Inventory.products())
+    items_count = Enum.count(product_availabilities)
+
+    render(conn, "index.html",
+      product_availabilities: product_availabilities,
+      vendors_count: vendors_count,
+      products_count: products_count,
+      items_count: items_count
+    )
   end
 
   defp hydrate_and_filter(items) do
