@@ -34,3 +34,5 @@ npm-debug.log
 
 /_postgres-data
 
+/.envrc
+
