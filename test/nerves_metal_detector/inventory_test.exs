@@ -2,6 +2,8 @@ defmodule NervesMetalDetector.InventoryTest do
   use NervesMetalDetector.DataCase
 
   alias NervesMetalDetector.Inventory
+  alias NervesMetalDetector.Inventory.Product
+  alias NervesMetalDetector.Vendors.Vendor
 
   describe "products" do
     test "products/0 returns a list of products" do
@@ -70,6 +72,36 @@ defmodule NervesMetalDetector.InventoryTest do
       item5 = product_availability_fixture("sku4", "vendor1", in_stock: true)
 
       assert [^item2, ^item5, ^item4, ^item1, ^item3] = Inventory.list_product_availabilities()
+    end
+
+    test "hydrate_product_availability/1 applies vendor and product info to the item" do
+      item1 =
+        product_availability_fixture("CM4001008", "berrybasede", in_stock: false)
+        |> Inventory.hydrate_product_availability()
+
+      assert %Vendor{id: "berrybasede"} = item1.vendor_info
+      assert %Product{sku: "CM4001008"} = item1.product_info
+
+      item2 =
+        product_availability_fixture("CM4001008", "vendor1", in_stock: false)
+        |> Inventory.hydrate_product_availability()
+
+      assert item2.vendor_info == nil
+      assert %Product{sku: "CM4001008"} = item2.product_info
+
+      item3 =
+        product_availability_fixture("sku1", "berrybasede", in_stock: false)
+        |> Inventory.hydrate_product_availability()
+
+      assert %Vendor{id: "berrybasede"} = item3.vendor_info
+      assert item3.product_info == nil
+
+      item4 =
+        product_availability_fixture("sku1", "vendor1", in_stock: false)
+        |> Inventory.hydrate_product_availability()
+
+      assert item4.vendor_info == nil
+      assert item4.product_info == nil
     end
 
     test "store_product_availability/1 upserts the given arguments into the database" do
