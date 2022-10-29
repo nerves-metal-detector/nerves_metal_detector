@@ -6,6 +6,7 @@ defmodule NervesMetalDetector.Inventory do
   alias NervesMetalDetector.Repo
   alias NervesMetalDetector.Inventory.Data
   alias NervesMetalDetector.Inventory.ProductAvailability
+  alias NervesMetalDetector.Vendors
 
   def products(), do: Data.Products.all()
 
@@ -20,6 +21,25 @@ defmodule NervesMetalDetector.Inventory do
         select: pa
 
     Repo.all(query)
+    |> Enum.map(&hydrate_product_availability/1)
+  end
+
+  def hydrate_product_availability(product_availability) do
+    product =
+      case get_product_by_sku(product_availability.sku) do
+        {:ok, product} -> product
+        _ -> nil
+      end
+
+    vendor =
+      case Vendors.get_by_id(product_availability.vendor) do
+        {:ok, vendor} -> vendor
+        _ -> nil
+      end
+
+    product_availability
+    |> Map.put(:vendor_info, vendor)
+    |> Map.put(:product_info, product)
   end
 
   def fetch_product_availability(args) do
@@ -27,6 +47,15 @@ defmodule NervesMetalDetector.Inventory do
   end
 
   def store_product_availability(attrs) do
-    ProductAvailability.store(attrs)
+    {:ok, pa} = ProductAvailability.store(attrs)
+    pa = hydrate_product_availability(pa)
+
+    Phoenix.PubSub.broadcast(
+      NervesMetalDetector.PubSub,
+      ProductAvailability.pub_sub_topic(pa),
+      {:update_product_availability, pa}
+    )
+
+    {:ok, pa}
   end
 end

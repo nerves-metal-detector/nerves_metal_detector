@@ -2,6 +2,9 @@ defmodule NervesMetalDetector.Inventory.ProductAvailability do
   use Ecto.Schema
   import Ecto.Changeset
   alias NervesMetalDetector.Repo
+  alias NervesMetalDetector.Vendors.Vendor
+  alias NervesMetalDetector.Inventory.Product
+  alias NervesMetalDetector.Inventory.ProductAvailability
 
   @primary_key false
 
@@ -14,7 +17,9 @@ defmodule NervesMetalDetector.Inventory.ProductAvailability do
           price: Money.t(),
           fetched_at: DateTime.t(),
           inserted_at: DateTime.t(),
-          updated_at: DateTime.t()
+          updated_at: DateTime.t(),
+          vendor_info: Vendor.t(),
+          product_info: Product.t()
         }
 
   schema "product_availability" do
@@ -26,6 +31,8 @@ defmodule NervesMetalDetector.Inventory.ProductAvailability do
     field :price, Money.Ecto.Composite.Type
     field :fetched_at, :utc_datetime
     timestamps(type: :utc_datetime)
+    field :vendor_info, :any, virtual: true
+    field :product_info, :any, virtual: true
   end
 
   @doc false
@@ -49,6 +56,10 @@ defmodule NervesMetalDetector.Inventory.ProductAvailability do
       conflict_target: [:sku, :vendor],
       returning: true
     )
+  end
+
+  def pub_sub_topic(%ProductAvailability{sku: sku, vendor: vendor}) do
+    "product_availability:#{vendor}:#{sku}"
   end
 
   defprotocol Fetcher do
