@@ -44,7 +44,10 @@ defmodule NervesMetalDetectorWeb.HomeLive do
 
     if connected?(socket) do
       for pa <- product_availabilities do
-        Phoenix.PubSub.subscribe(NervesMetalDetector.PubSub, ProductAvailability.pub_sub_topic(pa))
+        Phoenix.PubSub.subscribe(
+          NervesMetalDetector.PubSub,
+          ProductAvailability.pub_sub_topic(pa)
+        )
       end
     end
 
@@ -73,7 +76,7 @@ defmodule NervesMetalDetectorWeb.HomeLive do
     updated_items =
       socket.assigns.product_availabilities
       |> Enum.map(fn item ->
-        if (item.vendor === pa.vendor && item.sku === pa.sku) do
+        if item.vendor === pa.vendor && item.sku === pa.sku do
           pa
         else
           item
