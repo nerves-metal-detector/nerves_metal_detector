@@ -70,7 +70,13 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     html_tree
     |> Floki.find("[type=\"application/ld+json\"]")
     |> Enum.map(fn item ->
-      parse_result = item |> Floki.children() |> Enum.at(0) |> Jason.decode()
+      parse_result =
+        item
+        |> Floki.children()
+        |> Enum.at(0)
+        |> String.replace("\r", "")
+        |> String.replace("\n", "")
+        |> Jason.decode()
 
       case parse_result do
         {:ok, parsed} -> parsed
@@ -81,11 +87,11 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_currency(json_info) do
-    get_in(json_info, ["offers", Access.at(0), "priceCurrency"])
+    get_in(json_info, ["offers", "priceCurrency"])
   end
 
   defp parse_price(json_info) do
-    get_in(json_info, ["offers", Access.at(0), "price"])
+    get_in(json_info, ["offers", "price"])
   end
 
   defp parse_item_url(json_info) do
@@ -93,7 +99,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_in_stock(json_info) do
-    case get_in(json_info, ["offers", Access.at(0), "availability"]) do
+    case get_in(json_info, ["offers", "availability"]) do
       "https://schema.org/InStock" -> true
       _ -> false
     end
