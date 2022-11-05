@@ -10,7 +10,7 @@ defmodule NervesMetalDetectorWeb.ProductAvailabilitiesTableComponent do
         <th class="py-3 px-1.5 text-left font-medium">In Stock (#)</th>
         <th class="py-3 px-1.5 text-left font-medium">Price</th>
         <th class="py-3 px-1.5 text-left font-medium">Vendor</th>
-        <th class="py-3 px-1.5 text-left font-medium">Updated (UTC)</th>
+        <th class="py-3 px-1.5 text-left font-medium">Updated</th>
         <th class="py-3 px-1.5 text-left font-medium">Link</th>
       </tr>
       <tbody id={"#{@id}-table-body"} phx-update={@update}>
@@ -37,7 +37,12 @@ defmodule NervesMetalDetectorWeb.ProductAvailabilitiesTableComponent do
             <%= "#{item.vendor_info.name} (#{item.vendor_info.country |> Atom.to_string() |> String.upcase()})" %>
           </td>
           <td class="p-1.5">
-            <%= NervesMetalDetector.Cldr.DateTime.to_string!(item.fetched_at, format: "MMM dd, HH:mm") %>
+            <.date_time
+              id={"#{item.vendor_info.id}-#{item.sku}-fetched_at"}
+              date_time={item.fetched_at}
+              format="MMM dd, HH:mm"
+              js_format="MMM dd, HH:mm"
+            />
           </td>
           <td class="p-1.5">
             <a href={item.url} target="_blank" class="hover:text-blue-500">
