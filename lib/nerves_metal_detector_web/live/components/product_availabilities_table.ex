@@ -37,7 +37,7 @@ defmodule NervesMetalDetectorWeb.ProductAvailabilitiesTableComponent do
             <%= "#{item.vendor_info.name} (#{item.vendor_info.country |> Atom.to_string() |> String.upcase()})" %>
           </td>
           <td class="p-1.5">
-            <%= NervesMetalDetector.Cldr.DateTime.to_string!(item.fetched_at, format: "MMM dd, HH:mm") %>
+            <.date_time date_time={item.fetched_at} format="MMM dd, HH:mm" />
           </td>
           <td class="p-1.5">
             <a href={item.url} target="_blank" class="hover:text-blue-500">
