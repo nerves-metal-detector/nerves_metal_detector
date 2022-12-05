@@ -46,7 +46,6 @@ defmodule NervesMetalDetector.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
       {:ecto_psql_extras, "~> 0.7"},
       {:oban, "~> 2.13"},
       {:httpoison, "~> 1.8"},
@@ -56,7 +55,8 @@ defmodule NervesMetalDetector.MixProject do
       {:ex_cldr_dates_times, "~> 2.0"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:heroicons, "~> 0.5.1"},
-      {:finch, "~> 0.13"}
+      {:finch, "~> 0.13"},
+      {:bandit, ">= 0.6.2"}
     ]
   end
 

@@ -18,6 +18,7 @@ config :nerves_metal_detector, NervesMetalDetectorWeb.Endpoint,
     formats: [html: NervesMetalDetectorWeb.ErrorHTML, json: NervesMetalDetectorWeb.ErrorJSON],
     layout: false
   ],
+  adapter: Bandit.PhoenixAdapter,
   pubsub_server: NervesMetalDetector.PubSub,
   live_view: [signing_salt: "B9/Dc+VT"]
 
