@@ -14,7 +14,10 @@ config :nerves_metal_detector,
 # Configures the endpoint
 config :nerves_metal_detector, NervesMetalDetectorWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: NervesMetalDetectorWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    formats: [html: NervesMetalDetectorWeb.ErrorHTML, json: NervesMetalDetectorWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: NervesMetalDetector.PubSub,
   live_view: [signing_salt: "B9/Dc+VT"]
 
@@ -26,9 +29,6 @@ config :nerves_metal_detector, NervesMetalDetectorWeb.Endpoint,
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
 config :nerves_metal_detector, NervesMetalDetector.Mailer, adapter: Swoosh.Adapters.Local
-
-# Swoosh API client is needed for adapters other than SMTP.
-config :swoosh, :api_client, false
 
 config :tailwind,
   version: "3.2.0",
@@ -43,7 +43,7 @@ config :tailwind,
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.29",
+  version: "0.14.41",
   default: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
