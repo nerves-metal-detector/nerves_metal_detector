@@ -27,7 +27,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.TiendatecEs do
     # RPi 3
     %ProductUpdate{
       url:
-        "https://www.tiendatec.es/raspberry-pi/gama-raspberry-pi/89-raspberry-pi-1-modelo-a-512mb-nuevo-modelo-640522711086.html",
+        "https://www.tiendatec.es/raspberry-pi/gama-raspberry-pi/932-raspberry-pi-3-modelo-a-plus-0652508442181.html",
       sku: "RPI3-MODAP"
     },
     %ProductUpdate{
