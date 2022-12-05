@@ -8,12 +8,14 @@ defmodule NervesMetalDetector.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Ecto repository
-      NervesMetalDetector.Repo,
       # Start the Telemetry supervisor
       NervesMetalDetectorWeb.Telemetry,
+      # Start the Ecto repository
+      NervesMetalDetector.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: NervesMetalDetector.PubSub},
+      # Start Finch
+      {Finch, name: SampleApp.Finch},
       # Start the Endpoint (http/https)
       NervesMetalDetectorWeb.Endpoint,
       # Start a worker by calling: NervesMetalDetector.Worker.start_link(arg)
