@@ -3,7 +3,9 @@ defmodule NervesMetalDetector.InventoryTest do
 
   alias NervesMetalDetector.Inventory
   alias NervesMetalDetector.Inventory.Product
+  alias NervesMetalDetector.Inventory.ProductAvailabilitySnapshot
   alias NervesMetalDetector.Vendors.Vendor
+  alias NervesMetalDetector.Repo
 
   describe "products" do
     test "products/0 returns a list of products" do
@@ -143,6 +145,48 @@ defmodule NervesMetalDetector.InventoryTest do
       })
 
       assert Enum.count(Inventory.list_product_availabilities()) === 2
+    end
+
+    test "store_product_availability/1 additionally stores product availability snapshots" do
+      import Ecto.Query
+
+      base_data = %{
+        sku: "sku1",
+        vendor: "vendor",
+        url: "https://testing.com",
+        in_stock: false,
+        items_in_stock: nil,
+        price: Money.new(:EUR, 100)
+      }
+
+      {:ok, _} =
+        Map.put(base_data, :fetched_at, ~U[2022-12-21 21:00:00.000000Z])
+        |> Inventory.store_product_availability()
+
+      assert Repo.one(from pa in ProductAvailabilitySnapshot, select: fragment("count(*)")) == 1
+
+      # Expecting no new entry because the timestamp is the same
+      {:ok, _} =
+        Map.put(base_data, :fetched_at, ~U[2022-12-21 21:00:00.000000Z])
+        |> Inventory.store_product_availability()
+
+      assert Repo.one(from pa in ProductAvailabilitySnapshot, select: fragment("count(*)")) == 1
+
+      # Expecting new entry because timestamp changed
+      {:ok, _} =
+        Map.put(base_data, :fetched_at, ~U[2022-12-21 22:00:00.000000Z])
+        |> Inventory.store_product_availability()
+
+      assert Repo.one(from pa in ProductAvailabilitySnapshot, select: fragment("count(*)")) == 2
+
+      # Expecting new entry because of different data
+      {:ok, _} =
+        base_data
+        |> Map.put(:vendor, "vendor2")
+        |> Map.put(:fetched_at, ~U[2022-12-21 22:00:00.000000Z])
+        |> Inventory.store_product_availability()
+
+      assert Repo.one(from pa in ProductAvailabilitySnapshot, select: fragment("count(*)")) == 3
     end
   end
 end

@@ -6,6 +6,7 @@ defmodule NervesMetalDetector.Inventory do
   alias NervesMetalDetector.Repo
   alias NervesMetalDetector.Inventory.Data
   alias NervesMetalDetector.Inventory.ProductAvailability
+  alias NervesMetalDetector.Inventory.ProductAvailabilitySnapshot
   alias NervesMetalDetector.Vendors
 
   def products(), do: Data.Products.all()
@@ -48,6 +49,8 @@ defmodule NervesMetalDetector.Inventory do
 
   def store_product_availability(attrs) do
     {:ok, pa} = ProductAvailability.store(attrs)
+    {:ok, _} = ProductAvailabilitySnapshot.store(attrs)
+
     pa = hydrate_product_availability(pa)
 
     Phoenix.PubSub.broadcast(
