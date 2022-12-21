@@ -49,13 +49,17 @@ defmodule NervesMetalDetector.Inventory.ProductAvailability do
     |> upsert()
   end
 
-  def upsert(%Ecto.Changeset{} = changeset) do
-    changeset
-    |> Repo.insert(
+  def upsert_opts() do
+    [
       on_conflict: {:replace_all_except, [:inserted_at]},
       conflict_target: [:sku, :vendor],
       returning: true
-    )
+    ]
+  end
+
+  def upsert(%Ecto.Changeset{} = changeset) do
+    changeset
+    |> Repo.insert(upsert_opts())
   end
 
   def pub_sub_topic(%ProductAvailability{sku: sku, vendor: vendor}) do
