@@ -2,4 +2,14 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* This file is for your main application CSS */
+@import "vendor/uPlot.css";
+
+.u-series th {
+  display: inline-grid;
+  align-items: center;
+  grid-template-columns: 1fr auto auto;
+}
+
+.u-legend .u-marker {
+  border-radius: 50%;
+}

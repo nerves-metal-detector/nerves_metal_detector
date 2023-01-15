@@ -17,7 +17,12 @@ defmodule NervesMetalDetectorWeb.Router do
   scope "/", NervesMetalDetectorWeb do
     pipe_through :browser
 
-    live "/", HomeLive
+    live_session :default do
+      live "/", HomeLive
+      live "/vendor/:vendor", VendorLive
+      live "/vendor/:vendor/:sku", VendorProductLive
+      live "/product/:sku", ProductLive
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -36,6 +41,8 @@ defmodule NervesMetalDetectorWeb.Router do
 
     scope "/dev" do
       pipe_through :browser
+
+      live "/charttest", NervesMetalDetectorWeb.ChartTestLive
 
       live_dashboard "/dashboard",
         metrics: NervesMetalDetectorWeb.Telemetry,
