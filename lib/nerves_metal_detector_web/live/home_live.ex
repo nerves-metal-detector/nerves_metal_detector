@@ -9,9 +9,7 @@ defmodule NervesMetalDetectorWeb.HomeLive do
   def render(assigns) do
     ~H"""
     <section>
-      <h1 class="text-3xl text-center mt-4 mb-4">Nerves Metal Detector</h1>
-
-      <div class="bg-white rounded-lg mb-2 overflow-hidden">
+      <div class="bg-white rounded-lg mb-2 pb-2 overflow-hidden">
         <.live_component
           module={ProductAvailabilitiesTableComponent}
           id="product-availabilities"
@@ -55,9 +53,20 @@ defmodule NervesMetalDetectorWeb.HomeLive do
     products_count = Enum.count(Inventory.products())
     items_count = Enum.count(product_availabilities)
 
+    title = page_title()
+
+    meta_attrs = [
+      %{name: "title", content: title},
+      %{
+        name: "description",
+        content:
+          "Find hardware compatible with Nerves, the Elixir based framework for embedded systems"
+      }
+    ]
+
     socket =
       socket
-      |> assign(:product_availabilities, product_availabilities)
+      |> assign(page_title: title, meta_attrs: meta_attrs)
       |> assign(:initial_product_availabilities, product_availabilities)
       |> assign(:vendors_count, vendors_count)
       |> assign(:products_count, products_count)
@@ -73,16 +82,6 @@ defmodule NervesMetalDetectorWeb.HomeLive do
       patch: true
     )
 
-    updated_items =
-      socket.assigns.product_availabilities
-      |> Enum.map(fn item ->
-        if item.vendor === pa.vendor && item.sku === pa.sku do
-          pa
-        else
-          item
-        end
-      end)
-
-    {:noreply, assign(socket, product_availabilities: updated_items)}
+    {:noreply, socket}
   end
 end

@@ -1,7 +1,7 @@
 defmodule NervesMetalDetector.Inventory do
   @moduledoc false
 
-  import Ecto.Query, only: [from: 2]
+  import Ecto.Query, only: [from: 2, limit: 2]
 
   alias NervesMetalDetector.Repo
   alias NervesMetalDetector.Inventory.Data
@@ -15,11 +15,11 @@ defmodule NervesMetalDetector.Inventory do
 
   def product_update_items(), do: Data.ProductUpdateItems.all()
 
-  def list_product_availabilities() do
+  def list_product_availabilities(filters \\ []) do
     query =
-      from pa in ProductAvailability,
-        order_by: [desc: :in_stock, asc: :sku, asc: :vendor],
-        select: pa
+      from ProductAvailability,
+        where: ^filters,
+        order_by: [desc: :in_stock, asc: :sku, asc: :vendor]
 
     Repo.all(query)
     |> Enum.map(&hydrate_product_availability/1)
@@ -60,5 +60,19 @@ defmodule NervesMetalDetector.Inventory do
     )
 
     {:ok, pa}
+  end
+
+  def list_product_availability_snapshots(filters \\ [], limit \\ nil)
+
+  def list_product_availability_snapshots(filters, nil),
+    do: Repo.all(list_product_availability_snapshots_query(filters))
+
+  def list_product_availability_snapshots(filters, limit),
+    do: Repo.all(limit(list_product_availability_snapshots_query(filters), ^limit))
+
+  defp list_product_availability_snapshots_query(filters) do
+    from ProductAvailabilitySnapshot,
+      where: ^filters,
+      order_by: [asc: :fetched_at]
   end
 end

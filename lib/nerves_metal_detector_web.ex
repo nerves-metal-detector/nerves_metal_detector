@@ -85,6 +85,7 @@ defmodule NervesMetalDetectorWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
+      import NervesMetalDetectorWeb.Util, only: [page_title: 0, page_title: 1]
       import NervesMetalDetectorWeb.CoreComponents
       import NervesMetalDetectorWeb.UtilComponents
       import NervesMetalDetectorWeb.Gettext

@@ -1,6 +1,7 @@
 defmodule NervesMetalDetector.Inventory.Product do
   @moduledoc false
 
+  @derive {Phoenix.Param, key: :sku}
   @enforce_keys [:sku, :name, :type]
   defstruct sku: nil,
             name: nil,
