@@ -56,7 +56,8 @@ defmodule NervesMetalDetector.MixProject do
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:heroicons, "~> 0.5.1"},
       {:finch, "~> 0.13"},
-      {:bandit, ">= 0.6.6"}
+      {:bandit, ">= 0.6.6"},
+      {:plug_canonical_host, "~> 2.0"}
     ]
   end
 
