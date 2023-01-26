@@ -15,7 +15,7 @@ defmodule NervesMetalDetector.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: NervesMetalDetector.PubSub},
       # Start Finch
-      {Finch, name: SampleApp.Finch},
+      {Finch, name: NervesMetalDetector.Finch},
       # Start the Endpoint (http/https)
       NervesMetalDetectorWeb.Endpoint,
       # Start a worker by calling: NervesMetalDetector.Worker.start_link(arg)
