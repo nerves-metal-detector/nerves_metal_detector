@@ -39,7 +39,6 @@ defmodule NervesMetalDetectorWeb do
   def controller do
     quote do
       use Phoenix.Controller,
-        namespace: NervesMetalDetectorWeb,
         formats: [:html, :json],
         layouts: [html: NervesMetalDetectorWeb.Layouts]
 

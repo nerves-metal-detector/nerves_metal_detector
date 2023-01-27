@@ -32,31 +32,31 @@ defmodule NervesMetalDetector.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.7.0-rc.0", override: true},
+      {:phoenix, "~> 1.7.0-rc.2", override: true},
       {:phoenix_ecto, "~> 4.4"},
-      {:ecto_sql, "~> 3.6"},
+      {:ecto_sql, "~> 3.9"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.0"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.18.3"},
+      {:phoenix_live_reload, "~> 1.4", only: :dev},
+      {:phoenix_live_view, "~> 0.18.11"},
       {:phoenix_live_dashboard, "~> 0.7.2"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
-      {:swoosh, "~> 1.3"},
+      {:swoosh, "~> 1.9"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.20"},
+      {:gettext, "~> 0.22"},
       {:jason, "~> 1.2"},
       {:ecto_psql_extras, "~> 0.7"},
-      {:oban, "~> 2.13"},
+      {:oban, "~> 2.14"},
       {:httpoison, "~> 1.8"},
       {:floki, "~> 0.33.1"},
       {:ex_money, "~> 5.12"},
-      {:ex_money_sql, "~> 1.7"},
+      {:ex_money_sql, "~> 1.8"},
       {:ex_cldr_dates_times, "~> 2.0"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
-      {:heroicons, "~> 0.5.1"},
+      {:heroicons, "~> 0.5.2"},
       {:finch, "~> 0.13"},
-      {:bandit, ">= 0.6.6"},
+      {:bandit, ">= 0.6.7"},
       {:plug_canonical_host, "~> 2.0"}
     ]
   end
@@ -69,10 +69,11 @@ defmodule NervesMetalDetector.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup"],
+      setup: ["deps.get", "ecto.setup", "assets.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
     ]
   end

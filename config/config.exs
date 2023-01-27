@@ -32,7 +32,7 @@ config :nerves_metal_detector, NervesMetalDetectorWeb.Endpoint,
 config :nerves_metal_detector, NervesMetalDetector.Mailer, adapter: Swoosh.Adapters.Local
 
 config :tailwind,
-  version: "3.2.0",
+  version: "3.2.4",
   default: [
     args: ~w(
         --config=tailwind.config.js
@@ -62,7 +62,7 @@ config :phoenix, :json_library, Jason
 
 config :nerves_metal_detector, Oban,
   repo: NervesMetalDetector.Repo,
-  queues: [default: 1, product_updates: 5],
+  queues: [default: 1, product_updates: 20],
   plugins: [
     Oban.Plugins.Pruner,
     {Oban.Plugins.Cron,

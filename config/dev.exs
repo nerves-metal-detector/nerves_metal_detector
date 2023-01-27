@@ -60,7 +60,7 @@ config :nerves_metal_detector, NervesMetalDetectorWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/nerves_metal_detector_web/(live|components|controllers|charts)/.*(ex)$",
+      ~r"lib/nerves_metal_detector_web/(live|components|controllers|charts)/.*(ex|heex)$",
       ~r"lib/nerves_metal_detector_web/templates/.*(eex)$"
     ]
   ]
