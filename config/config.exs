@@ -62,7 +62,7 @@ config :phoenix, :json_library, Jason
 
 config :nerves_metal_detector, Oban,
   repo: NervesMetalDetector.Repo,
-  queues: [default: 1, product_updates: 5],
+  queues: [default: 1, product_updates: 20],
   plugins: [
     Oban.Plugins.Pruner,
     {Oban.Plugins.Cron,
