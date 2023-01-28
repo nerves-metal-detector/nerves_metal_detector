@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.BuyzeroDe do
+defmodule NervesMetalDetector.Vendors.ElektorNl do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -6,10 +6,10 @@ defmodule NervesMetalDetector.Vendors.BuyzeroDe do
   @impl Vendor
   def vendor_info() do
     %Vendor{
-      id: "buyzerode",
-      name: "Buyzero",
-      country: :de,
-      homepage: "https://buyzero.de"
+      id: "elektornl",
+      name: "Elektor",
+      country: :nl,
+      homepage: "https://www.elektor.nl"
     }
   end
 
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.BuyzeroDe do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.BuyzeroDe.ProductUpdate do
-  alias NervesMetalDetector.Vendors.BuyzeroDe
+  for: NervesMetalDetector.Vendors.ElektorNl.ProductUpdate do
+  alias NervesMetalDetector.Vendors.ElektorNl
 
-  def fetch_availability(%BuyzeroDe.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%ElektorNl.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -52,7 +52,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
          {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info)} do
       data = %{
         sku: sku,
-        vendor: BuyzeroDe.vendor_info().id,
+        vendor: ElektorNl.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
         items_in_stock: nil,
@@ -95,7 +95,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
 
   defp parse_in_stock(json_info) do
     case get_in(json_info, ["offers", Access.at(0), "availability"]) do
-      "https://schema.org/InStock" -> true
+      "http://schema.org/InStock" -> true
       _ -> false
     end
   end
