@@ -15,6 +15,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
     ProductUpdateItems.PiShopCa,
     ProductUpdateItems.PiShopCh,
     ProductUpdateItems.PiShopUs,
+    ProductUpdateItems.PiShopZa,
     ProductUpdateItems.RaspberryStoreNl,
     ProductUpdateItems.RasppishopDe,
     ProductUpdateItems.ReicheltDe,

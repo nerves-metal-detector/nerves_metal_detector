@@ -17,6 +17,7 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.PiShopCa,
     Vendors.PiShopCh,
     Vendors.PiShopUs,
+    Vendors.PiShopZa,
     Vendors.RaspberryStoreNl,
     Vendors.RasppishopDe,
     Vendors.ReicheltDe,
