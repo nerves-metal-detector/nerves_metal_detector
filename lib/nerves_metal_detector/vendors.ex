@@ -8,6 +8,7 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.BerryBaseDe,
     Vendors.BuyzeroDe,
     Vendors.ChicagoElectronicDistributorsUs,
+    Vendors.ElectrokitSe,
     Vendors.ElektorNl,
     Vendors.KubiiFr,
     Vendors.McHobbyBe,
