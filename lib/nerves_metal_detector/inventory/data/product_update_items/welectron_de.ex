@@ -2,6 +2,16 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.WelectronDe do
   alias NervesMetalDetector.Vendors.WelectronDe.ProductUpdate
 
   @items [
+    # RPi 3
+    %ProductUpdate{
+      url: "https://www.welectron.com/Raspberry-Pi-3-Modell-A-Made-in-UK",
+      sku: "RPI3-MODAP"
+    },
+    %ProductUpdate{
+      url: "https://www.welectron.com/Raspberry-Pi-3-Modell-B-Made-in-UK",
+      sku: "RPI3-MODBP"
+    },
+
     # RPi CM4
     %ProductUpdate{
       url: "https://www.welectron.com/Raspberry-Pi-CM4002008-Compute-Module-8-GB-2-GB-RAM",
@@ -65,6 +75,16 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.WelectronDe do
       sku: "RPI4-MODBP-8GB"
     },
     %ProductUpdate{url: "https://www.welectron.com/Raspberry-Pi-4-B-1-GB", sku: "RPI4-MODBP-1GB"},
+
+    # RPi Zero
+    %ProductUpdate{
+      url: "https://www.welectron.com/Raspberry-Pi-Zero-W-mit-loser-Stiftleiste",
+      sku: "SC0020"
+    },
+    %ProductUpdate{
+      url: "https://www.welectron.com/Raspberry-Pi-Zero-WH-mit-verloeteter-Stiftleiste",
+      sku: "SC0020WH"
+    },
 
     # RPi Zero 2
     %ProductUpdate{url: "https://www.welectron.com/Raspberry-Pi-Zero-2-W", sku: "SC0510"}

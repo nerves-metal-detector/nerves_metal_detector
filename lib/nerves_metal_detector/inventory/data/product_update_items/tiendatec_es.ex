@@ -36,6 +36,18 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.TiendatecEs do
       sku: "RPI3-MODBP"
     },
 
+    # RPi Zero
+    %ProductUpdate{
+      url:
+        "https://www.tiendatec.es/raspberry-pi/gama-raspberry-pi/1130-raspberry-pi-zero-w-8472496016155.html",
+      sku: "SC0020"
+    },
+    %ProductUpdate{
+      url:
+        "https://www.tiendatec.es/raspberry-pi/gama-raspberry-pi/768-raspberry-pi-zero-wh-0327249600939.html",
+      sku: "SC0020WH"
+    },
+
     # RPi Zero 2
     %ProductUpdate{
       url:

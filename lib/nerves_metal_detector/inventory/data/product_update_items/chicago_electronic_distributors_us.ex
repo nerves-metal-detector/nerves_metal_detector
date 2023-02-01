@@ -2,6 +2,16 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.ChicagoElectroni
   alias NervesMetalDetector.Vendors.ChicagoElectronicDistributorsUs.ProductUpdate
 
   @items [
+    # RPi 3
+    %ProductUpdate{
+      url: "https://chicagodist.com/products/raspberry-pi-3-model-a",
+      sku: "RPI3-MODAP"
+    },
+    %ProductUpdate{
+      url: "https://chicagodist.com/products/raspberry-pi-model-3-b-1-4-ghz",
+      sku: "RPI3-MODBP"
+    },
+
     # RPi 4
     %ProductUpdate{
       url: "https://chicagodist.com/products/raspberry-pi-4-model-b-1gb",

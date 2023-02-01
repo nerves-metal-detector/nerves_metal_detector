@@ -10,9 +10,31 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.MeloperoIt do
 
     # RPi 4
     %ProductUpdate{
-      url:
-        "https://www.melopero.com/en/shop/raspberry-pi/boards/raspberrypi4computermodelb2gbram/",
+      url: "https://www.melopero.com/shop/raspberry-pi/boards/raspberrypi4computermodelb1gbram/",
+      sku: "RPI4-MODBP-1GB"
+    },
+    %ProductUpdate{
+      url: "https://www.melopero.com/shop/raspberry-pi/boards/raspberrypi4computermodelb2gbram/",
       sku: "RPI4-MODBP-2GB"
+    },
+    %ProductUpdate{
+      url: "https://www.melopero.com/shop/raspberry-pi/boards/raspberrypi4computermodelb4gbram/",
+      sku: "RPI4-MODBP-4GB"
+    },
+    %ProductUpdate{
+      url: "https://www.melopero.com/shop/raspberry-pi/boards/raspberrypi4computermodelb8gbram/",
+      sku: "RPI4-MODBP-8GB"
+    },
+
+    # RPi Zero
+    %ProductUpdate{
+      url: "https://www.melopero.com/shop/raspberry-pi/boards/raspberrypizerow/",
+      sku: "SC0020"
+    },
+    %ProductUpdate{
+      url:
+        "https://www.melopero.com/shop/raspberry-pi/boards/raspberrypizerowhconheaderpresaldato/",
+      sku: "SC0020WH"
     },
 
     # RPi Zero 2

@@ -52,6 +52,16 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.PimoroniUk do
       sku: "CM4001032"
     },
 
+    # RPi Zero
+    %ProductUpdate{
+      url: "https://shop.pimoroni.com/products/raspberry-pi-zero-w?variant=39458414264403",
+      sku: "SC0020"
+    },
+    %ProductUpdate{
+      url: "https://shop.pimoroni.com/products/raspberry-pi-zero-w?variant=39458414297171",
+      sku: "SC0020WH"
+    },
+
     # RPi Zero 2
     %ProductUpdate{url: "https://shop.pimoroni.com/products/raspberry-pi-zero-2-w", sku: "SC0510"}
   ]

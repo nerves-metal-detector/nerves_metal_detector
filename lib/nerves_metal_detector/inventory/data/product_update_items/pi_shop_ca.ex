@@ -2,6 +2,12 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.PiShopCa do
   alias NervesMetalDetector.Vendors.PiShopCa.ProductUpdate
 
   @items [
+    # RPi 3
+    %ProductUpdate{
+      url: "https://www.pishop.ca/product/raspberry-pi-3-model-a-plus-512mb-ram/",
+      sku: "RPI3-MODAP"
+    },
+
     # RPi CM4
     %ProductUpdate{
       url: "https://www.pishop.ca/product/raspberry-pi-compute-module-4-8gb-lite-cm4008000/",
@@ -165,6 +171,9 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.PiShopCa do
       url: "https://www.pishop.ca/product/raspberry-pi-4-model-b-8gb/",
       sku: "RPI4-MODBP-8GB"
     },
+
+    # RPi Zero
+    %ProductUpdate{url: "https://www.pishop.ca/product/raspberry-pi-zero-w/", sku: "SC0020"},
 
     # RPi Zero 2
     %ProductUpdate{url: "https://www.pishop.ca/product/raspberry-pi-zero-2-w/", sku: "SC0510"}
