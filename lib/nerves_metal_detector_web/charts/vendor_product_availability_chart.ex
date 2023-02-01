@@ -38,7 +38,14 @@ defmodule NervesMetalDetectorWeb.VendorProductAvailabilityChart do
 
     stock_mapping =
       case has_count do
-        true -> Map.new(snapshots, &{&1.fetched_at, &1.items_in_stock || 0})
+        true -> Map.new(snapshots, fn s ->
+          count = case s.in_stock do
+            true -> s.items_in_stock || 1
+            false -> 0
+          end
+
+          {s.fetched_at, count}
+        end)
         false -> Map.new(snapshots, &{&1.fetched_at, &1.in_stock})
       end
 

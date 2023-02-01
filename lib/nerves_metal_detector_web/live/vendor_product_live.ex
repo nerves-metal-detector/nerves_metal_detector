@@ -147,7 +147,11 @@ defmodule NervesMetalDetectorWeb.VendorProductLive do
 
     stock =
       case Enum.count(has_count_result) do
-        1 -> pa.items_in_stock || 0
+        1 ->
+          case pa.in_stock do
+            true -> pa.items_in_stock || 1
+            false -> 0
+          end
         0 -> pa.in_stock
       end
 
