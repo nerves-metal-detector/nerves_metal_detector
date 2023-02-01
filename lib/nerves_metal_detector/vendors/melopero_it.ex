@@ -49,13 +49,15 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
          {:parse_price, price} when not is_nil(price) <- {:parse_price, parse_price(json_info)},
          {:parse_item_url, item_url} when not is_nil(item_url) <-
            {:parse_item_url, parse_item_url(json_info)},
-         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info)} do
+         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info)},
+         {:parse_items_in_stock, items_in_stock} <-
+           {:parse_items_in_stock, parse_items_in_stock(parsed)} do
       data = %{
         sku: sku,
         vendor: MeloperoIt.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
-        items_in_stock: nil,
+        items_in_stock: items_in_stock,
         price: Money.new!(String.to_atom(currency), "#{price}")
       }
 
@@ -96,6 +98,18 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     case get_in(json_info, ["offers", Access.at(0), "availability"]) do
       "http://schema.org/InStock" -> true
       _ -> false
+    end
+  end
+
+  defp parse_items_in_stock(html_tree) do
+    with stock when stock not in [nil, []] <-
+           Floki.find(html_tree, ".product-stock .stock"),
+         text when is_binary(text) <- Floki.text(stock),
+         scanned <- Cldr.Number.Parser.scan(text),
+         number when number not in [0] <- Enum.find(scanned, &is_number/1) do
+      number
+    else
+      _ -> nil
     end
   end
 end
