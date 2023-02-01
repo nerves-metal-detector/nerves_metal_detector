@@ -176,6 +176,13 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.PiShopUs do
       sku: "RPI4-MODBP-8GB"
     },
 
+    # RPi Zero
+    %ProductUpdate{url: "https://www.pishop.us/product/raspberry-pi-zero-w/", sku: "SC0020"},
+    %ProductUpdate{
+      url: "https://www.pishop.us/product/raspberry-pi-zero-wireless-wh-pre-soldered-header/",
+      sku: "SC0020WH"
+    },
+
     # RPi Zero 2
     %ProductUpdate{url: "https://www.pishop.us/product/raspberry-pi-zero-2-w/", sku: "SC0510"}
   ]

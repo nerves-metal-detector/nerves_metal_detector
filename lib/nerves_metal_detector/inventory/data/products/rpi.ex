@@ -97,6 +97,21 @@ defmodule NervesMetalDetector.Inventory.Data.Products.Rpi do
               }
             end)
 
+  @rpi0 [
+    %Product{
+      sku: "SC0020",
+      name: "RPi Zero W",
+      description: "Raspberry Pi Zero with wifi and no headers",
+      type: :sbc
+    },
+    %Product{
+      sku: "SC0020WH",
+      name: "RPi Zero WH",
+      description: "Raspberry Pi Zero with wifi and headers",
+      type: :sbc
+    }
+  ]
+
   @rpi0_2 [
     %Product{
       sku: "SC0510",
@@ -112,7 +127,7 @@ defmodule NervesMetalDetector.Inventory.Data.Products.Rpi do
     }
   ]
 
-  @items @rpi_3 ++ @rpi_4 ++ @rpi_cm3 ++ @rpi_cm4 ++ @rpi0_2
+  @items @rpi_3 ++ @rpi_4 ++ @rpi_cm3 ++ @rpi_cm4 ++ @rpi0 ++ @rpi0_2
 
   def all(), do: @items
 end

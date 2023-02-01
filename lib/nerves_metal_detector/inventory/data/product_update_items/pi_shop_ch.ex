@@ -81,6 +81,9 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.PiShopCh do
       sku: "CM4102016"
     },
 
+    # RPi Zero
+    %ProductUpdate{url: "https://www.pi-shop.ch/raspberry-pi-zero-w-1810", sku: "SC0020"},
+
     # RPi Zero 2
     %ProductUpdate{url: "https://www.pi-shop.ch/raspberry-pi-zero-2-w", sku: "SC0510"}
   ]

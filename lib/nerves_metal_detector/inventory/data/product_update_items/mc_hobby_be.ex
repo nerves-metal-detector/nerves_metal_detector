@@ -2,11 +2,28 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.McHobbyBe do
   alias NervesMetalDetector.Vendors.McHobbyBe.ProductUpdate
 
   @items [
+    # RPi Zero
+    %ProductUpdate{
+      url:
+        "https://shop.mchobby.be/en/pi-zero-12wwh/1228-raspberry-pi-zero-w-v11-3232100012288.html",
+      sku: "SC0020"
+    },
+    %ProductUpdate{
+      url:
+        "https://shop.mchobby.be/en/pi-zero-12wwh/1892-raspberry-pi-zero-w-with-header-v11-3232100018921.html",
+      sku: "SC0020WH"
+    },
+
     # RPi Zero 2
     %ProductUpdate{
       url:
         "https://shop.mchobby.be/en/pi-zero-12wwh/2297-raspberry-pi-zero-2-wireless-cam-conn-3232100022973.html",
       sku: "SC0510"
+    },
+    %ProductUpdate{
+      url:
+        "https://shop.mchobby.be/en/pi-zero-12wwh/2334-raspberry-pi-zero-2-with-header-wireless-cam-conn-3232100023345.html",
+      sku: "SC0510WH"
     },
 
     # RPi 3

@@ -2,6 +2,10 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.BerryBaseDe do
   alias NervesMetalDetector.Vendors.BerryBaseDe.ProductUpdate
 
   @items [
+    # RPi 3
+    %ProductUpdate{url: "https://www.berrybase.de/raspberry-pi-3-modell-a", sku: "RPI3-MODAP"},
+    %ProductUpdate{url: "https://www.berrybase.de/raspberry-pi-3-modell-b", sku: "RPI3-MODBP"},
+
     # RPi 4
     %ProductUpdate{
       url: "https://www.berrybase.de/raspberry-pi-4-computer-modell-b-1gb-ram",
@@ -167,6 +171,10 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.BerryBaseDe do
       url: "https://www.berrybase.de/raspberry-pi-compute-module-4-4gb-ram-16gb-flash",
       sku: "CM4004016"
     },
+
+    # RPi Zero
+    %ProductUpdate{url: "https://www.berrybase.de/raspberry-pi-zero-w", sku: "SC0020"},
+    %ProductUpdate{url: "https://www.berrybase.de/raspberry-pi-zero-wh", sku: "SC0020WH"},
 
     # RPi Zero 2
     %ProductUpdate{

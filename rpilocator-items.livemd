@@ -167,7 +167,7 @@ defmodule NMD.RpiLocatorProductsByVendorGenerator do
     [_, localToken] = Regex.run(~r/localToken="([[:alnum:]]+)"/, info)
     [_, queryFilter] = Regex.run(~r/queryFilter="([[:alnum:]|=]*)"/, info)
 
-    ts = System.os_time(:second) * 1000
+    ts = System.os_time(:millisecond)
 
     url =
       "https://rpilocator.com/data.cfm?method=getProductTable&token=#{localToken}&#{queryFilter}&_=#{ts}"
@@ -196,7 +196,8 @@ defmodule NMD.RpiLocatorProductsByVendorGenerator do
 
     headers = [
       {"Accept", "application/json, text/javascript, */*; q=0.01"},
-      {"X-Requested-With", "XMLHttpRequest"}
+      {"X-Requested-With", "XMLHttpRequest"},
+      {"referer", scrape_url}
     ]
 
     {:ok, %{body: body, status_code: 200}} = HTTPoison.get(url, headers, options)
@@ -233,7 +234,7 @@ The cell might "hang" after a vendor was selected which is totally fine. It is b
 
 rpilocator.com has rather aggressive rate limiting. If the cell was executed but no result is shown, then the rate limit was hit. Manually visiting rpilocator.com will show an error as well. Simply try again a minute later.
 
-<!-- livebook:{"attrs":{},"kind":"Elixir.NMD.RpiLocatorProductsByVendorGenerator","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{},"chunks":null,"kind":"Elixir.NMD.RpiLocatorProductsByVendorGenerator","livebook_object":"smart_cell"} -->
 
 ```elixir
 []

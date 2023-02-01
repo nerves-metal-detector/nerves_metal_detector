@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.MeloperoIt do
+defmodule NervesMetalDetector.Vendors.ElectrokitSe do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -6,10 +6,10 @@ defmodule NervesMetalDetector.Vendors.MeloperoIt do
   @impl Vendor
   def vendor_info() do
     %Vendor{
-      id: "meloperoit",
-      name: "Melopero",
-      country: :it,
-      homepage: "https://www.melopero.com"
+      id: "electrokitse",
+      name: "electro:kit",
+      country: :se,
+      homepage: "https://www.electrokit.com"
     }
   end
 
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.MeloperoIt do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.MeloperoIt.ProductUpdate do
-  alias NervesMetalDetector.Vendors.MeloperoIt
+  for: NervesMetalDetector.Vendors.ElectrokitSe.ProductUpdate do
+  alias NervesMetalDetector.Vendors.ElectrokitSe
 
-  def fetch_availability(%MeloperoIt.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%ElectrokitSe.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -54,7 +54,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
            {:parse_items_in_stock, parse_items_in_stock(parsed)} do
       data = %{
         sku: sku,
-        vendor: MeloperoIt.vendor_info().id,
+        vendor: ElectrokitSe.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
         items_in_stock: items_in_stock,
@@ -79,7 +79,10 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
         _ -> %{}
       end
     end)
+    |> Enum.reverse()
     |> Enum.reduce(&Map.merge(&2, &1))
+    |> Map.get("@graph")
+    |> Enum.find(&(&1["@type"] === "Product"))
   end
 
   defp parse_currency(json_info) do
@@ -102,12 +105,12 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_items_in_stock(html_tree) do
-    with stock when stock not in [nil, []] <-
-           Floki.find(html_tree, ".product-stock .stock"),
-         text when is_binary(text) <- Floki.text(stock),
-         scanned <- Cldr.Number.Parser.scan(text),
-         number when number not in [0] <- Enum.find(scanned, &is_number/1) do
-      number
+    with product_info when product_info not in [nil, []] <-
+           Floki.find(html_tree, ".product-info"),
+         in_stock when in_stock not in [nil, []] <- Floki.find(product_info, ".in-stock"),
+         text when is_binary(text) and text not in [""] <- Floki.text(in_stock),
+         {value, _} <- Integer.parse(text) do
+      value
     else
       _ -> nil
     end

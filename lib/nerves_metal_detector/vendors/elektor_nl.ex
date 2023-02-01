@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.MeloperoIt do
+defmodule NervesMetalDetector.Vendors.ElektorNl do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -6,10 +6,10 @@ defmodule NervesMetalDetector.Vendors.MeloperoIt do
   @impl Vendor
   def vendor_info() do
     %Vendor{
-      id: "meloperoit",
-      name: "Melopero",
-      country: :it,
-      homepage: "https://www.melopero.com"
+      id: "elektornl",
+      name: "Elektor",
+      country: :nl,
+      homepage: "https://www.elektor.nl"
     }
   end
 
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.MeloperoIt do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.MeloperoIt.ProductUpdate do
-  alias NervesMetalDetector.Vendors.MeloperoIt
+  for: NervesMetalDetector.Vendors.ElektorNl.ProductUpdate do
+  alias NervesMetalDetector.Vendors.ElektorNl
 
-  def fetch_availability(%MeloperoIt.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%ElektorNl.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -49,15 +49,13 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
          {:parse_price, price} when not is_nil(price) <- {:parse_price, parse_price(json_info)},
          {:parse_item_url, item_url} when not is_nil(item_url) <-
            {:parse_item_url, parse_item_url(json_info)},
-         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info)},
-         {:parse_items_in_stock, items_in_stock} <-
-           {:parse_items_in_stock, parse_items_in_stock(parsed)} do
+         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info)} do
       data = %{
         sku: sku,
-        vendor: MeloperoIt.vendor_info().id,
+        vendor: ElektorNl.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
-        items_in_stock: items_in_stock,
+        items_in_stock: nil,
         price: Money.new!(String.to_atom(currency), "#{price}")
       }
 
@@ -79,6 +77,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
         _ -> %{}
       end
     end)
+    |> Enum.reverse()
     |> Enum.reduce(&Map.merge(&2, &1))
   end
 
@@ -98,18 +97,6 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     case get_in(json_info, ["offers", Access.at(0), "availability"]) do
       "http://schema.org/InStock" -> true
       _ -> false
-    end
-  end
-
-  defp parse_items_in_stock(html_tree) do
-    with stock when stock not in [nil, []] <-
-           Floki.find(html_tree, ".product-stock .stock"),
-         text when is_binary(text) <- Floki.text(stock),
-         scanned <- Cldr.Number.Parser.scan(text),
-         number when number not in [0] <- Enum.find(scanned, &is_number/1) do
-      number
-    else
-      _ -> nil
     end
   end
 end

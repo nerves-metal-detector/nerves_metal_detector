@@ -88,6 +88,17 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.ThePiHutUk do
       url: "https://thepihut.com/products/raspberry-pi-compute-module-4?variant=39486530552003"
     },
 
+    # RPi Zero
+    %ProductUpdate{
+      url: "https://thepihut.com/products/raspberry-pi-zero-w?variant=31901049749566",
+      sku: "SC0020"
+    },
+    %ProductUpdate{
+      url:
+        "https://thepihut.com/products/raspberry-pi-zero-wh-with-pre-soldered-header?variant=547332849681",
+      sku: "SC0020WH"
+    },
+
     # RPi Zero 2
     %ProductUpdate{
       sku: "SC0510",

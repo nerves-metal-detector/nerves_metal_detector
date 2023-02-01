@@ -3,6 +3,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.AdafruitUs do
 
   @items [
     # RPi 3
+    %ProductUpdate{url: "https://www.adafruit.com/product/4027", sku: "RPI3-MODAP"},
     %ProductUpdate{url: "https://www.adafruit.com/product/3775", sku: "RPI3-MODBP"},
 
     # RPi CM3
@@ -21,6 +22,10 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.AdafruitUs do
     %ProductUpdate{url: "https://www.adafruit.com/product/4790", sku: "CM4102008"},
     %ProductUpdate{url: "https://www.adafruit.com/product/4791", sku: "CM4102016"},
     %ProductUpdate{url: "https://www.adafruit.com/product/4982", sku: "CM4104032"},
+
+    # RPi Zero
+    %ProductUpdate{url: "https://www.adafruit.com/product/3400", sku: "SC0020"},
+    %ProductUpdate{url: "https://www.adafruit.com/product/3708", sku: "SC0020WH"},
 
     # RPi Zero 2
     %ProductUpdate{url: "https://www.adafruit.com/product/5291", sku: "SC0510"}
