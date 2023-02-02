@@ -57,7 +57,8 @@ defmodule NervesMetalDetector.MixProject do
       {:heroicons, "~> 0.5.2"},
       {:finch, "~> 0.13"},
       {:bandit, ">= 0.6.8"},
-      {:plug_canonical_host, "~> 2.0"}
+      {:plug_canonical_host, "~> 2.0"},
+      {:libcluster, "~> 3.3"}
     ]
   end
 

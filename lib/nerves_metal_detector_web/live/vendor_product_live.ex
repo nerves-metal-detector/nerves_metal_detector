@@ -152,7 +152,9 @@ defmodule NervesMetalDetectorWeb.VendorProductLive do
             true -> pa.items_in_stock || 1
             false -> 0
           end
-        0 -> pa.in_stock
+
+        0 ->
+          pa.in_stock
       end
 
     new_data_set = [

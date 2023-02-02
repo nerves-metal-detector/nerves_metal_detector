@@ -7,7 +7,10 @@ defmodule NervesMetalDetector.Application do
 
   @impl true
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies) || []
+
     children = [
+      {Cluster.Supervisor, [topologies, [name: NervesMetalDetector.ClusterSupervisor]]},
       # Start the Telemetry supervisor
       NervesMetalDetectorWeb.Telemetry,
       # Start the Ecto repository
