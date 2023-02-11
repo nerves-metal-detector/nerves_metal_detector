@@ -91,7 +91,7 @@ defmodule NervesMetalDetectorWeb.VendorProductLive do
          {:ok, vendor} <- Vendors.get_by_id(vendor_id),
          {:ok, product} <- Inventory.get_product_by_sku(sku),
          [product_availability] <-
-           Inventory.list_product_availabilities(vendor: vendor.id, sku: product.sku) do
+           Inventory.list_product_availabilities([{:where, [vendor: vendor.id, sku: product.sku]}]) do
       if connected?(socket) do
         Phoenix.PubSub.subscribe(
           NervesMetalDetector.PubSub,

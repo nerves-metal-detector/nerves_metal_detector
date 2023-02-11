@@ -5,7 +5,7 @@ defmodule NervesMetalDetectorWeb.ProductAvailabilitiesTableComponent do
 
   def render(assigns) do
     ~H"""
-    <table class="w-full">
+    <table class="w-full" id={@id}>
       <tr>
         <th :if={shown?(@hidden_columns, :sku)} class="py-3 px-1.5 text-left font-medium">SKU</th>
         <th :if={shown?(@hidden_columns, :name)} class="py-3 px-1.5 text-left font-medium">Name</th>

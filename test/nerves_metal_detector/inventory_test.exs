@@ -66,6 +66,31 @@ defmodule NervesMetalDetector.InventoryTest do
       item
     end
 
+    test "count_product_availabilities/0 counts all items" do
+      product_availability_fixture("sku1", "vendor", in_stock: false)
+      product_availability_fixture("sku2", "vendor", in_stock: true)
+      product_availability_fixture("sku3", "vendor", in_stock: false)
+      product_availability_fixture("sku4", "vendor2", in_stock: true)
+      product_availability_fixture("sku4", "vendor1", in_stock: true)
+
+      assert 5 = Inventory.count_product_availabilities()
+    end
+
+    test "count_product_availabilities/1 counts all items using the given filters" do
+      product_availability_fixture("sku1", "vendor", in_stock: false)
+      product_availability_fixture("sku2", "vendor", in_stock: true)
+      product_availability_fixture("sku3", "vendor", in_stock: false)
+      product_availability_fixture("sku4", "vendor2", in_stock: true)
+      product_availability_fixture("sku4", "vendor1", in_stock: true)
+
+      assert 3 = Inventory.count_product_availabilities([{:where, [vendor: "vendor"]}])
+      assert 1 = Inventory.count_product_availabilities([{:where, [vendor: "vendor1"]}])
+      assert 1 = Inventory.count_product_availabilities([{:where, [vendor: "vendor2"]}])
+      assert 2 = Inventory.count_product_availabilities([{:where, [sku: "sku4"]}])
+      assert 3 = Inventory.count_product_availabilities([{:where, [in_stock: true]}])
+      assert 2 = Inventory.count_product_availabilities([{:where, [in_stock: false]}])
+    end
+
     test "list_product_availabilities/0 lists all items sorted by :in_stock, :sku and :vendor" do
       item1 = product_availability_fixture("sku1", "vendor", in_stock: false)
       item2 = product_availability_fixture("sku2", "vendor", in_stock: true)
@@ -83,10 +108,31 @@ defmodule NervesMetalDetector.InventoryTest do
       item4 = product_availability_fixture("sku4", "vendor2", in_stock: true)
       item5 = product_availability_fixture("sku4", "vendor1", in_stock: true)
 
-      assert [^item3] = Inventory.list_product_availabilities(sku: "sku3")
-      assert [^item5, ^item4] = Inventory.list_product_availabilities(sku: "sku4")
-      assert [^item2, ^item1, ^item3] = Inventory.list_product_availabilities(vendor: "vendor")
-      assert [^item2] = Inventory.list_product_availabilities(vendor: "vendor", sku: "sku2")
+      assert [^item3] = Inventory.list_product_availabilities([{:where, [sku: "sku3"]}])
+      assert [^item5, ^item4] = Inventory.list_product_availabilities([{:where, [sku: "sku4"]}])
+
+      assert [^item2, ^item1, ^item3] =
+               Inventory.list_product_availabilities([{:where, [vendor: "vendor"]}])
+
+      assert [^item2] =
+               Inventory.list_product_availabilities([{:where, [vendor: "vendor", sku: "sku2"]}])
+    end
+
+    test "list_product_availabilities/1 lists paginates items using the given pagination parameters" do
+      item1 = product_availability_fixture("sku1", "vendor", in_stock: false)
+      item2 = product_availability_fixture("sku2", "vendor", in_stock: true)
+      item3 = product_availability_fixture("sku3", "vendor", in_stock: false)
+      item4 = product_availability_fixture("sku4", "vendor2", in_stock: true)
+      item5 = product_availability_fixture("sku4", "vendor1", in_stock: true)
+
+      assert [^item2, ^item5] =
+               Inventory.list_product_availabilities([{:paginate, %{page: 1, per_page: 2}}])
+
+      assert [^item4, ^item1] =
+               Inventory.list_product_availabilities([{:paginate, %{page: 2, per_page: 2}}])
+
+      assert [^item3] =
+               Inventory.list_product_availabilities([{:paginate, %{page: 3, per_page: 2}}])
     end
 
     test "hydrate_product_availability/1 applies vendor and product info to the item" do
