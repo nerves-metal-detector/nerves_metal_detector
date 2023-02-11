@@ -42,8 +42,7 @@ defmodule NervesMetalDetectorWeb.ProductLive do
     with sku when not is_nil(sku) <- params["sku"],
          {:ok, product} <- Inventory.get_product_by_sku(sku) do
       product_availabilities =
-        Inventory.list_product_availabilities(sku: product.sku)
-        |> Enum.filter(fn i -> i.product_info !== nil && i.vendor_info !== nil end)
+        Inventory.list_product_availabilities([{:where, [sku: product.sku]}])
 
       if connected?(socket) do
         for pa <- product_availabilities do

@@ -5,6 +5,9 @@ defmodule NervesMetalDetectorWeb.HomeLive do
   alias NervesMetalDetector.Inventory.ProductAvailability
   alias NervesMetalDetector.Vendors
   alias NervesMetalDetectorWeb.ProductAvailabilitiesTableComponent
+  alias NervesMetalDetectorWeb.PaginationComponent
+
+  @per_page 50
 
   def render(assigns) do
     ~H"""
@@ -14,6 +17,13 @@ defmodule NervesMetalDetectorWeb.HomeLive do
           module={ProductAvailabilitiesTableComponent}
           id="product-availabilities"
           items={@initial_product_availabilities}
+        />
+
+        <PaginationComponent.render
+          page={@page}
+          total_pages={@total_pages}
+          jump_to={:top}
+          class="mx-auto mt-2 px-2"
         />
       </div>
 
@@ -36,22 +46,9 @@ defmodule NervesMetalDetectorWeb.HomeLive do
   end
 
   def mount(_params, _session, socket) do
-    product_availabilities =
-      Inventory.list_product_availabilities()
-      |> Enum.filter(fn i -> i.product_info !== nil && i.vendor_info !== nil end)
-
-    if connected?(socket) do
-      for pa <- product_availabilities do
-        Phoenix.PubSub.subscribe(
-          NervesMetalDetector.PubSub,
-          ProductAvailability.pub_sub_topic(pa)
-        )
-      end
-    end
-
     vendors_count = Enum.count(Vendors.all())
     products_count = Enum.count(Inventory.products())
-    items_count = Enum.count(product_availabilities)
+    total_product_availabilities = Inventory.count_product_availabilities()
 
     title = page_title()
 
@@ -67,20 +64,54 @@ defmodule NervesMetalDetectorWeb.HomeLive do
     socket =
       socket
       |> assign(page_title: title, meta_attrs: meta_attrs)
-      |> assign(:initial_product_availabilities, product_availabilities)
       |> assign(:vendors_count, vendors_count)
       |> assign(:products_count, products_count)
-      |> assign(:items_count, items_count)
+      |> assign(:items_count, total_product_availabilities)
+      |> assign(:pa_pub_sub_topics, [])
+      |> assign(:page, 1)
+      |> assign(
+        :total_pages,
+        PaginationComponent.total_pages(total_product_availabilities, @per_page)
+      )
 
     {:ok, socket, temporary_assigns: [initial_product_availabilities: []]}
   end
 
+  def handle_params(params, _url, socket) do
+    for topic <- socket.assigns.pa_pub_sub_topics do
+      Phoenix.PubSub.unsubscribe(NervesMetalDetector.PubSub, topic)
+    end
+
+    page = PaginationComponent.parse_page(params)
+
+    product_availabilities =
+      Inventory.list_product_availabilities([{:paginate, %{page: page, per_page: @per_page}}])
+
+    pa_pub_sub_topics = Enum.map(product_availabilities, &ProductAvailability.pub_sub_topic/1)
+
+    if connected?(socket) do
+      for topic <- pa_pub_sub_topics do
+        Phoenix.PubSub.subscribe(NervesMetalDetector.PubSub, topic)
+      end
+    end
+
+    socket =
+      socket
+      |> assign(:initial_product_availabilities, product_availabilities)
+      |> assign(:pa_pub_sub_topics, pa_pub_sub_topics)
+      |> assign(:page, page)
+
+    {:noreply, socket}
+  end
+
   def handle_info({:update_product_availability, pa}, socket) do
-    send_update(ProductAvailabilitiesTableComponent,
-      id: "product-availabilities",
-      items: [pa],
-      patch: true
-    )
+    if ProductAvailability.pub_sub_topic(pa) in socket.assigns.pa_pub_sub_topics do
+      send_update(ProductAvailabilitiesTableComponent,
+        id: "product-availabilities",
+        items: [pa],
+        patch: true
+      )
+    end
 
     {:noreply, socket}
   end

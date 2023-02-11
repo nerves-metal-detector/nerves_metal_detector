@@ -15,13 +15,29 @@ defmodule NervesMetalDetector.Inventory do
 
   def product_update_items(), do: Data.ProductUpdateItems.all()
 
-  def list_product_availabilities(filters \\ []) do
+  def count_product_availabilities(criteria \\ []) when is_list(criteria) do
+    Enum.reduce(criteria, ProductAvailability, fn
+      {:where, where}, query ->
+        from q in query, where: ^where
+    end)
+    |> Repo.aggregate(:count)
+  end
+
+  def list_product_availabilities(criteria \\ []) when is_list(criteria) do
     query =
       from ProductAvailability,
-        where: ^filters,
         order_by: [desc: :in_stock, asc: :sku, asc: :vendor]
 
-    Repo.all(query)
+    Enum.reduce(criteria, query, fn
+      {:where, where}, query ->
+        from q in query, where: ^where
+
+      {:paginate, %{page: page, per_page: per_page}}, query ->
+        from q in query,
+          offset: ^((page - 1) * per_page),
+          limit: ^per_page
+    end)
+    |> Repo.all()
     |> Enum.map(&hydrate_product_availability/1)
   end
 

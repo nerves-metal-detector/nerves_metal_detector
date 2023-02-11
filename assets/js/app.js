@@ -40,6 +40,15 @@ window.addEventListener("phx:page-loading-stop", () => {
   topbar.hide()
 })
 
+window.addEventListener("jump-viewport-to", e => {
+  if (e.detail.top) {
+    window.scrollTo({ top: 0 })
+  }
+  if (e.detail.id) {
+    document.getElementById(e.detail.id).scrollIntoView()
+  }
+})
+
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 

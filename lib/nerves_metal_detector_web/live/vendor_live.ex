@@ -39,8 +39,7 @@ defmodule NervesMetalDetectorWeb.VendorLive do
     with vendor_id when not is_nil(vendor_id) <- params["vendor"],
          {:ok, vendor} <- Vendors.get_by_id(vendor_id) do
       product_availabilities =
-        Inventory.list_product_availabilities(vendor: vendor.id)
-        |> Enum.filter(fn i -> i.product_info !== nil && i.vendor_info !== nil end)
+        Inventory.list_product_availabilities([{:where, [vendor: vendor.id]}])
 
       if connected?(socket) do
         for pa <- product_availabilities do
