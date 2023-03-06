@@ -4,7 +4,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.MeloperoIt do
   @items [
     # RPi 3
     %ProductUpdate{
-      url: "https://www.melopero.com/shop/raspberry-pi/boards/raspberrypi3modela/",
+      url: "https://www.melopero.com/shop/raspberry-pi/raspberrypi3modela/",
       sku: "RPI3-MODAP"
     },
 
@@ -28,12 +28,12 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.MeloperoIt do
 
     # RPi Zero
     %ProductUpdate{
-      url: "https://www.melopero.com/shop/raspberry-pi/boards/raspberrypizerow/",
+      url: "https://www.melopero.com/shop/raspberry-pi/raspberrypizerow/",
       sku: "SC0020"
     },
     %ProductUpdate{
       url:
-        "https://www.melopero.com/shop/raspberry-pi/boards/raspberrypizerowhconheaderpresaldato/",
+        "https://www.melopero.com/shop/raspberry-pi/raspberrypizerowhconheaderpresaldato/",
       sku: "SC0020WH"
     },
 
