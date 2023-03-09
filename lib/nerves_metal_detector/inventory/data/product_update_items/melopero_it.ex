@@ -32,8 +32,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.MeloperoIt do
       sku: "SC0020"
     },
     %ProductUpdate{
-      url:
-        "https://www.melopero.com/shop/raspberry-pi/raspberrypizerowhconheaderpresaldato/",
+      url: "https://www.melopero.com/shop/raspberry-pi/raspberrypizerowhconheaderpresaldato/",
       sku: "SC0020WH"
     },
 

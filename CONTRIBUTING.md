@@ -115,22 +115,22 @@ Each vendor has a collection of its specific `ProductUpdate` structs in
 Usually, they just need an `sku` which needs to match the `sku` of a known product,
 and an `url` that points to the product page.
 
-**Important:** If a new collection was created, it needs to be added to the list in `Inventory.Data.ProductUpdateItems`.
+**Important:** If a new collection was created, it needs to be added to the mapping in `Inventory.Data.ProductUpdateItems`.
 
 
-## Adding new Vendors and Products from Rpilocator
+## Adding new Vendors and Products from RpiLocator
 
 All products from rpilocator.com are already defined.
 
 For adding missing vendors, please look at the guide above.
 
-Creating the product update items list for a vendor is made easy 
-using the livebook in `./rpilocator-items.livemd`. 
-Simply select the vendor and execute the cell. It will fetch all vendor specific items and
-generate a list of `ProductUpdate` structs that can be pasted into the collection 
+Creating the product update items list for a vendor is made easy
+using the `/dev/rpilocator` page when the project is run locally in the `dev` environment.
+Simply select the RpiLocator vendor and press "Update". It will fetch all vendor specific items and
+generate a list of `ProductUpdate` structs that can be pasted into the collection
 if the collection follows the same structure as the existing ones.
 
 For better organisation, please structure the list in the same way as the existing ones
 where the items are separated into different product groups like `RPi 3`, `RPi 4`, `RPi CM4`.
 
-Also, please remove any additional query params that were added by Rpilocator.
+Also, please remove any additional query params that were added by RpiLocator.

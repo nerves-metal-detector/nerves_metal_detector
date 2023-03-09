@@ -42,7 +42,11 @@ defmodule NervesMetalDetectorWeb.Router do
     scope "/dev" do
       pipe_through :browser
 
-      live "/charttest", NervesMetalDetectorWeb.ChartTestLive
+      live_session :dev_tools, on_mount: NervesMetalDetectorWeb.DevAssigns do
+        live "/", NervesMetalDetectorWeb.DevLive
+        live "/charttest", NervesMetalDetectorWeb.Dev.ChartTestLive
+        live "/rpilocator", NervesMetalDetectorWeb.Dev.RpiLocatorLive
+      end
 
       live_dashboard "/dashboard",
         metrics: NervesMetalDetectorWeb.Telemetry,

@@ -1,4 +1,4 @@
-defmodule NervesMetalDetectorWeb.ChartTestLive do
+defmodule NervesMetalDetectorWeb.Dev.ChartTestLive do
   use NervesMetalDetectorWeb, :live_view
 
   alias NervesMetalDetector.Inventory
