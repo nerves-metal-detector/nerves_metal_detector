@@ -83,19 +83,33 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_currency(json_info) do
-    get_in(json_info, ["offers", Access.at(0), "priceCurrency"])
+    get_in(json_info, [
+      "@graph",
+      Access.at(0),
+      "offers",
+      Access.at(0),
+      "priceSpecification",
+      "priceCurrency"
+    ])
   end
 
   defp parse_price(json_info) do
-    get_in(json_info, ["offers", Access.at(0), "price"])
+    get_in(json_info, [
+      "@graph",
+      Access.at(0),
+      "offers",
+      Access.at(0),
+      "priceSpecification",
+      "price"
+    ])
   end
 
   defp parse_item_url(json_info) do
-    get_in(json_info, ["offers", Access.at(0), "url"])
+    get_in(json_info, ["@graph", Access.at(0), "offers", Access.at(0), "url"])
   end
 
   defp parse_in_stock(json_info) do
-    case get_in(json_info, ["offers", Access.at(0), "availability"]) do
+    case get_in(json_info, ["@graph", Access.at(0), "offers", Access.at(0), "availability"]) do
       "http://schema.org/InStock" -> true
       _ -> false
     end
