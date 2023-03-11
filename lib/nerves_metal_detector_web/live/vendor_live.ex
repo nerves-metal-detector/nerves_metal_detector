@@ -19,7 +19,7 @@ defmodule NervesMetalDetectorWeb.VendorLive do
           <div class="text-xs">
             <a href={@vendor.homepage} target="_blank" class="hover:text-blue-500">
               Go to vendor homepage
-              <Heroicons.arrow_top_right_on_square mini class="w-3.5 h-3.5 inline" />
+              <.icon name="hero-arrow-top-right-on-square-mini" class="w-3.5 h-3.5" />
             </a>
           </div>
         </div>

@@ -1,6 +1,7 @@
 defmodule NervesMetalDetectorWeb.PaginationComponent do
   use Phoenix.Component
   use NervesMetalDetectorWeb, :verified_routes
+  import NervesMetalDetectorWeb.CoreComponents, only: [icon: 1]
 
   alias Phoenix.LiveView.JS
 
@@ -19,10 +20,10 @@ defmodule NervesMetalDetectorWeb.PaginationComponent do
         phx-click={jump_to(@jump_to)}
         class="bg-blue-300 rounded p-1 text-white hover:bg-blue-500"
       >
-        <Heroicons.chevron_left class="w-4 h-4 m-1" />
+        <.icon name="hero-chevron-left" class="w-4 h-4 m-1" />
       </.link>
       <div :if={@page == 1} class="cursor-default bg-slate-200 rounded p-1 text-slate-400">
-        <Heroicons.chevron_left class="w-4 h-4 m-1" />
+        <.icon name="hero-chevron-left" class="w-4 h-4 m-1" />
       </div>
       <%= for i <- max(@page - 2 - max(2 - (@total_pages - @page), 0), 1)..min(@page + 2 + max(((2 + 1) - @page), 0), @total_pages) do %>
         <.link
@@ -46,10 +47,10 @@ defmodule NervesMetalDetectorWeb.PaginationComponent do
         phx-click={jump_to(@jump_to)}
         class="bg-blue-300 rounded p-1 text-white hover:bg-blue-500"
       >
-        <Heroicons.chevron_right class="w-4 h-4 m-1" />
+        <.icon name="hero-chevron-right" class="w-4 h-4 m-1" />
       </.link>
       <div :if={@page >= @total_pages} class="cursor-default bg-slate-200 rounded p-1 text-slate-400">
-        <Heroicons.chevron_right class="w-4 h-4 m-1" />
+        <.icon name="hero-chevron-right" class="w-4 h-4 m-1" />
       </div>
     </div>
     """

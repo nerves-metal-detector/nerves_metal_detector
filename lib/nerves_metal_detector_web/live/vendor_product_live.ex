@@ -21,7 +21,7 @@ defmodule NervesMetalDetectorWeb.VendorProductLive do
               <.link navigate={~p"/vendor/#{@vendor}"} class="hover:text-blue-500">
                 <%= Vendor.display_name(@vendor) %>
               </.link>
-              <Heroicons.chevron_right class={["w-5 h-5 inline"]} />
+              <.icon name="hero-chevron-right" class={["w-5 h-5"]} />
               <.link navigate={~p"/product/#{@product}"} class="hover:text-blue-500">
                 <%= @product.name %>
               </.link>
@@ -48,7 +48,7 @@ defmodule NervesMetalDetectorWeb.VendorProductLive do
                   <span :if={@product_availability.items_in_stock}>
                     <%= @product_availability.items_in_stock %> in stock
                   </span>
-                  <Heroicons.check class="w-4 h-4 inline -mt-1" />
+                  <.icon name="hero-check" class="w-4 h-4 -mt-1" />
                 </div>
                 <div class="text-md font-bold leading-tight">
                   Buy at <%= Vendor.display_name(@vendor) %> for <%= @product_availability.price %>

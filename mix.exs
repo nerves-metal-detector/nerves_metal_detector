@@ -32,13 +32,13 @@ defmodule NervesMetalDetector.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.7.0-rc.3", override: true},
+      {:phoenix, "~> 1.7.1"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.9"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.3"},
       {:phoenix_live_reload, "~> 1.4", only: :dev},
-      {:phoenix_live_view, "~> 0.18.15"},
+      {:phoenix_live_view, "~> 0.18.16"},
       {:phoenix_live_dashboard, "~> 0.7.2"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.9"},
@@ -54,9 +54,8 @@ defmodule NervesMetalDetector.MixProject do
       {:ex_money_sql, "~> 1.8"},
       {:ex_cldr_dates_times, "~> 2.0"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
-      {:heroicons, "~> 0.5.2"},
       {:finch, "~> 0.13"},
-      {:bandit, ">= 0.6.9"},
+      {:bandit, ">= 0.6.10"},
       {:plug_canonical_host, "~> 2.0"},
       {:libcluster, "~> 3.3"},
       {:makeup_elixir, "~> 0.1"}

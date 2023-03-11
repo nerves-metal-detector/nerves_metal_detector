@@ -21,7 +21,7 @@ defmodule NervesMetalDetectorWeb.Dev.RpiLocatorLive do
           <.link navigate={~p"/dev"} class="hover:text-blue-500">
             Developer Tools
           </.link>
-          <Heroicons.chevron_right class={["w-5 h-5 inline"]} /> RpiLocator
+          <.icon name="hero-chevron-right" class={["w-5 h-5"]} /> RpiLocator
         </h2>
         <div :if={@loading_rpilocator_vendors} class="m-4 grid place-content-center">
           <.spinner />
