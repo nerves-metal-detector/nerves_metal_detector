@@ -37,9 +37,8 @@ Any other way of running a Postgres database works as well.
 
 To start the Phoenix server:
 
-  * Install dependencies with `mix deps.get`
   * Make the environment variables in `.envrc.dist` available. When using [direnv](https://direnv.net/), copy the file to `.envrc` and run `direnv allow .`
-  * Create and migrate your database with `mix ecto.setup`
+  * Run `mix setup` to install and setup dependencies
   * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
