@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.ChicagoElectronicDistributorsUs do
+defmodule NervesMetalDetector.Vendors.CoolComponentsUk do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -6,10 +6,10 @@ defmodule NervesMetalDetector.Vendors.ChicagoElectronicDistributorsUs do
   @impl Vendor
   def vendor_info() do
     %Vendor{
-      id: "chicagoelectronicdistributorsus",
-      name: "Chicago Elec. Dist.",
-      country: :us,
-      homepage: "https://chicagodist.com"
+      id: "coolcomponentsuk",
+      name: "Cool Components",
+      country: :uk,
+      homepage: "https://coolcomponents.co.uk"
     }
   end
 
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.ChicagoElectronicDistributorsUs do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.ChicagoElectronicDistributorsUs.ProductUpdate do
-  alias NervesMetalDetector.Vendors.ChicagoElectronicDistributorsUs
+  for: NervesMetalDetector.Vendors.CoolComponentsUk.ProductUpdate do
+  alias NervesMetalDetector.Vendors.CoolComponentsUk
 
-  def fetch_availability(%ChicagoElectronicDistributorsUs.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%CoolComponentsUk.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -42,20 +42,17 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
            {:load_body, HTTPoison.get(url, [], options)},
          {:parse_document, parsed} when parsed not in [nil, []] <-
            {:parse_document, Floki.parse_document!(body)},
-         {:parse_product, product} when product not in [nil, []] <-
-           {:parse_product, parse_product(parsed)},
          {:parse_currency, currency} when not is_nil(currency) <-
-           {:parse_currency, parse_currency(product)},
-         {:parse_price, price} when not is_nil(price) <-
-           {:parse_price, parse_price(product)},
+           {:parse_currency, parse_currency(parsed)},
+         {:parse_price, price} when not is_nil(price) <- {:parse_price, parse_price(parsed)},
          {:parse_item_url, item_url} when not is_nil(item_url) <-
            {:parse_item_url, parse_item_url(parsed)},
-         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(product)},
+         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(parsed)},
          {:parse_items_in_stock, items_in_stock} <-
-           {:parse_items_in_stock, parse_items_in_stock(product)} do
+           {:parse_items_in_stock, parse_items_in_stock(parsed)} do
       data = %{
         sku: sku,
-        vendor: ChicagoElectronicDistributorsUs.vendor_info().id,
+        vendor: CoolComponentsUk.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
         items_in_stock: items_in_stock,
@@ -69,10 +66,6 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     end
   end
 
-  defp parse_product(html_tree) do
-    Floki.find(html_tree, "[itemtype=\"http://schema.org/Product\"]")
-  end
-
   defp parse_currency(html_tree) do
     Floki.find(html_tree, "[itemprop=priceCurrency]") |> Floki.attribute("content") |> Enum.at(0)
   end
@@ -82,16 +75,13 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_item_url(html_tree) do
-    Floki.find(html_tree, "[rel=canonical]")
-    |> Enum.at(0)
-    |> Floki.attribute("href")
-    |> Enum.at(0)
+    Floki.find(html_tree, "[itemprop=url]") |> Floki.attribute("content") |> Enum.at(0)
   end
 
   defp parse_in_stock(html_tree) do
     availability =
       Floki.find(html_tree, "[itemprop=availability]")
-      |> Floki.attribute("href")
+      |> Floki.attribute("content")
       |> Enum.at(0)
 
     case availability do
@@ -102,18 +92,13 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_items_in_stock(html_tree) do
-    available_quantity =
-      Floki.find(html_tree, ".product_form") |> Floki.attribute("data-variant-inventory")
-
-    if available_quantity != [] do
-      json_product_data =
-        available_quantity
-        |> Enum.at(0)
-        |> Jason.decode!()
-
-      Enum.at(json_product_data, 0)["inventory_quantity"]
+    with available when available not in [nil, []] <-
+           Floki.find(html_tree, "#variant-inventory .var-inv"),
+         text when is_binary(text) <- Floki.text(available),
+         {value, _} <- Integer.parse(text) do
+      value
     else
-      nil
+      _ -> nil
     end
   end
 end

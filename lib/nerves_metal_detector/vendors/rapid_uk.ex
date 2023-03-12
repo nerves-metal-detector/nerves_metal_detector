@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.RasppishopDe do
+defmodule NervesMetalDetector.Vendors.RapidUk do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -6,10 +6,10 @@ defmodule NervesMetalDetector.Vendors.RasppishopDe do
   @impl Vendor
   def vendor_info() do
     %Vendor{
-      id: "rasppishopde",
-      name: "Rasppishop",
-      country: :de,
-      homepage: "https://www.rasppishop.de"
+      id: "rapiduk",
+      name: "Rapid",
+      country: :uk,
+      homepage: "https://www.rapidonline.com"
     }
   end
 
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.RasppishopDe do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.RasppishopDe.ProductUpdate do
-  alias NervesMetalDetector.Vendors.RasppishopDe
+  for: NervesMetalDetector.Vendors.RapidUk.ProductUpdate do
+  alias NervesMetalDetector.Vendors.RapidUk
 
-  def fetch_availability(%RasppishopDe.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%RapidUk.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -48,14 +48,16 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
            {:parse_currency, parse_currency(json_info)},
          {:parse_price, price} when not is_nil(price) <- {:parse_price, parse_price(json_info)},
          {:parse_item_url, item_url} when not is_nil(item_url) <-
-           {:parse_item_url, parse_item_url(json_info)},
-         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info)} do
+           {:parse_item_url, parse_item_url(parsed)},
+         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info)},
+         {:parse_items_in_stock, items_in_stock} <-
+           {:parse_items_in_stock, parse_items_in_stock(parsed)} do
       data = %{
         sku: sku,
-        vendor: RasppishopDe.vendor_info().id,
+        vendor: RapidUk.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
-        items_in_stock: nil,
+        items_in_stock: items_in_stock,
         price: Money.new!(String.to_atom(currency), "#{price}")
       }
 
@@ -70,13 +72,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     html_tree
     |> Floki.find("[type=\"application/ld+json\"]")
     |> Enum.map(fn item ->
-      parse_result =
-        item
-        |> Floki.children()
-        |> Enum.at(0)
-        |> String.replace("\r", "")
-        |> String.replace("\n", "")
-        |> Jason.decode()
+      parse_result = item |> Floki.children() |> Enum.at(0) |> Jason.decode()
 
       case parse_result do
         {:ok, parsed} -> parsed
@@ -94,8 +90,8 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     get_in(json_info, ["offers", "price"])
   end
 
-  defp parse_item_url(json_info) do
-    get_in(json_info, ["url"])
+  defp parse_item_url(html_tree) do
+    Floki.find(html_tree, "[rel=canonical]") |> Floki.attribute("href") |> Enum.at(0)
   end
 
   defp parse_in_stock(json_info) do
@@ -103,6 +99,18 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
       "http://schema.org/InStock" -> true
       "https://schema.org/InStock" -> true
       _ -> false
+    end
+  end
+
+  defp parse_items_in_stock(html_tree) do
+    with available when available not in [nil, []] <-
+           Floki.find(html_tree, "#stockMessage .stock-message-text .green-text"),
+         text when is_binary(text) <- Floki.text(available),
+         scanned <- Cldr.Number.Parser.scan(text),
+         number when number not in [0] <- Enum.find(scanned, &is_number/1) do
+      number
+    else
+      _ -> nil
     end
   end
 end

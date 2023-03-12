@@ -90,6 +90,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
       |> Enum.at(0)
 
     case availability do
+      "http://schema.org/InStock" -> true
       "https://schema.org/InStock" -> true
       _ -> false
     end

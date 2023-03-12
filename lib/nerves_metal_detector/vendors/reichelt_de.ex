@@ -94,6 +94,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
 
     case availability do
       "http://schema.org/InStock" -> true
+      "https://schema.org/InStock" -> true
       _ -> false
     end
   end
