@@ -15,6 +15,7 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.ChicagoElectronicDistributorsUs,
     Vendors.ElectrokitSe,
     Vendors.ElektorNl,
+    Vendors.FarnellUk,
     Vendors.KubiiFr,
     Vendors.McHobbyBe,
     Vendors.MeloperoIt,
