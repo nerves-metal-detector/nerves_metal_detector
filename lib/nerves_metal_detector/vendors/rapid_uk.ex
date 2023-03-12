@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.FarnellUk do
+defmodule NervesMetalDetector.Vendors.RapidUk do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -6,10 +6,10 @@ defmodule NervesMetalDetector.Vendors.FarnellUk do
   @impl Vendor
   def vendor_info() do
     %Vendor{
-      id: "farnelluk",
-      name: "Farnell",
+      id: "rapiduk",
+      name: "Rapid",
       country: :uk,
-      homepage: "https://uk.farnell.com"
+      homepage: "https://www.rapidonline.com"
     }
   end
 
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.FarnellUk do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.FarnellUk.ProductUpdate do
-  alias NervesMetalDetector.Vendors.FarnellUk
+  for: NervesMetalDetector.Vendors.RapidUk.ProductUpdate do
+  alias NervesMetalDetector.Vendors.RapidUk
 
-  def fetch_availability(%FarnellUk.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%RapidUk.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -38,17 +38,8 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
       ]
     ]
 
-    headers = [
-      {"Accept",
-       "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"},
-      {"Accept-Language", "en-US,en;q=0.9"},
-      {"User-Agent",
-       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"},
-      {"Accept-Encoding", ""}
-    ]
-
     with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
-           {:load_body, HTTPoison.get(url, headers, options)},
+           {:load_body, HTTPoison.get(url, [], options)},
          {:parse_document, parsed} when parsed not in [nil, []] <-
            {:parse_document, Floki.parse_document!(body)},
          {:parse_json_info, json_info} when json_info not in [%{}] <-
@@ -63,7 +54,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
            {:parse_items_in_stock, parse_items_in_stock(parsed)} do
       data = %{
         sku: sku,
-        vendor: FarnellUk.vendor_info().id,
+        vendor: RapidUk.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
         items_in_stock: items_in_stock,
@@ -92,11 +83,11 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_currency(json_info) do
-    get_in(json_info, ["offers", Access.at(0), "offers", Access.at(0), "priceCurrency"])
+    get_in(json_info, ["offers", "priceCurrency"])
   end
 
   defp parse_price(json_info) do
-    get_in(json_info, ["offers", Access.at(0), "offers", Access.at(0), "price"])
+    get_in(json_info, ["offers", "price"])
   end
 
   defp parse_item_url(html_tree) do
@@ -104,9 +95,8 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_in_stock(json_info) do
-    case get_in(json_info, ["offers", Access.at(0), "availability"]) do
+    case get_in(json_info, ["offers", "availability"]) do
       "http://schema.org/InStock" -> true
-      # this store can't decide whether its http or https ...
       "https://schema.org/InStock" -> true
       _ -> false
     end
@@ -114,10 +104,11 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
 
   defp parse_items_in_stock(html_tree) do
     with available when available not in [nil, []] <-
-           Floki.find(html_tree, "#availContainer .inStockMsgEU"),
+           Floki.find(html_tree, "#stockMessage .stock-message-text .green-text"),
          text when is_binary(text) <- Floki.text(available),
-         {value, _} <- Integer.parse(text) do
-      value
+         scanned <- Cldr.Number.Parser.scan(text),
+         number when number not in [0] <- Enum.find(scanned, &is_number/1) do
+      number
     else
       _ -> nil
     end
