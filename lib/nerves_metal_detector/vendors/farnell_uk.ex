@@ -116,8 +116,9 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
     with available when available not in [nil, []] <-
            Floki.find(html_tree, "#availContainer .inStockMsgEU"),
          text when is_binary(text) <- Floki.text(available),
-         {value, _} <- Integer.parse(text) do
-      value
+         scanned <- Cldr.Number.Parser.scan(text),
+         number when number not in [0] <- Enum.find(scanned, &is_number/1) do
+      number
     else
       _ -> nil
     end

@@ -1,4 +1,4 @@
-defmodule NervesMetalDetector.Vendors.FarnellUk do
+defmodule NervesMetalDetector.Vendors.NewarkUs do
   alias NervesMetalDetector.Vendors.Vendor
 
   @behaviour Vendor
@@ -6,10 +6,10 @@ defmodule NervesMetalDetector.Vendors.FarnellUk do
   @impl Vendor
   def vendor_info() do
     %Vendor{
-      id: "farnelluk",
-      name: "Farnell",
-      country: :uk,
-      homepage: "https://uk.farnell.com"
+      id: "newarkus",
+      name: "Newark",
+      country: :us,
+      homepage: "https://www.newark.com"
     }
   end
 
@@ -20,10 +20,10 @@ defmodule NervesMetalDetector.Vendors.FarnellUk do
 end
 
 defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
-  for: NervesMetalDetector.Vendors.FarnellUk.ProductUpdate do
-  alias NervesMetalDetector.Vendors.FarnellUk
+  for: NervesMetalDetector.Vendors.NewarkUs.ProductUpdate do
+  alias NervesMetalDetector.Vendors.NewarkUs
 
-  def fetch_availability(%FarnellUk.ProductUpdate{url: url, sku: sku}) do
+  def fetch_availability(%NewarkUs.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
       ssl: [
@@ -63,7 +63,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
            {:parse_items_in_stock, parse_items_in_stock(parsed)} do
       data = %{
         sku: sku,
-        vendor: FarnellUk.vendor_info().id,
+        vendor: NewarkUs.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
         items_in_stock: items_in_stock,
@@ -114,10 +114,11 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
 
   defp parse_items_in_stock(html_tree) do
     with available when available not in [nil, []] <-
-           Floki.find(html_tree, "#availContainer .inStockMsgEU"),
+           Floki.find(html_tree, "#availContainer .availTxtMsg"),
          text when is_binary(text) <- Floki.text(available),
-         {value, _} <- Integer.parse(text) do
-      value
+         scanned <- Cldr.Number.Parser.scan(text),
+         number when number not in [0] <- Enum.find(scanned, &is_number/1) do
+      number
     else
       _ -> nil
     end

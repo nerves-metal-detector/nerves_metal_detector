@@ -18,6 +18,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
     Vendors.KubiiFr => ProductUpdateItems.KubiiFr,
     Vendors.McHobbyBe => ProductUpdateItems.McHobbyBe,
     Vendors.MeloperoIt => ProductUpdateItems.MeloperoIt,
+    Vendors.NewarkUs => ProductUpdateItems.NewarkUs,
     Vendors.PimoroniUk => ProductUpdateItems.PimoroniUk,
     Vendors.PiShopCa => ProductUpdateItems.PiShopCa,
     Vendors.PiShopCh => ProductUpdateItems.PiShopCh,
