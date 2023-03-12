@@ -10,6 +10,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
     Vendors.BotlandDe => ProductUpdateItems.BotlandDe,
     Vendors.BotlandEu => ProductUpdateItems.BotlandEu,
     Vendors.BotlandPl => ProductUpdateItems.BotlandPl,
+    Vendors.CoolComponentsUk => ProductUpdateItems.CoolComponentsUk,
     Vendors.ChicagoElectronicDistributorsUs => ProductUpdateItems.ChicagoElectronicDistributorsUs,
     Vendors.ElectrokitSe => ProductUpdateItems.ElectrokitSe,
     Vendors.ElektorNl => ProductUpdateItems.ElektorNl,
