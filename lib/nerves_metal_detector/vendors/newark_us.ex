@@ -106,7 +106,6 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   defp parse_in_stock(json_info) do
     case get_in(json_info, ["offers", Access.at(0), "availability"]) do
       "http://schema.org/InStock" -> true
-      # this store can't decide whether its http or https ...
       "https://schema.org/InStock" -> true
       _ -> false
     end

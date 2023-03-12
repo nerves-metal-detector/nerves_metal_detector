@@ -106,6 +106,7 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
 
   defp parse_in_stock(offer) do
     case offer["availability"] do
+      "http://schema.org/InStock" -> true
       "https://schema.org/InStock" -> true
       _ -> false
     end
