@@ -16,10 +16,12 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.ElectrokitSe,
     Vendors.ElektorNl,
     Vendors.FarnellUk,
+    Vendors.KamamiPl,
     Vendors.KubiiFr,
     Vendors.McHobbyBe,
     Vendors.MeloperoIt,
     Vendors.NewarkUs,
+    Vendors.PiAustraliaAu,
     Vendors.PimoroniUk,
     Vendors.PiShopCa,
     Vendors.PiShopCh,
@@ -33,6 +35,7 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.SemafAt,
     Vendors.SparkfunUs,
     Vendors.ThePiHutUk,
+    Vendors.ThreeThreeZeroOhmsMx,
     Vendors.TiendatecEs,
     Vendors.WelectronDe
   ]

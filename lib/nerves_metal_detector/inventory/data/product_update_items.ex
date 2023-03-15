@@ -15,10 +15,12 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
     Vendors.ElectrokitSe => ProductUpdateItems.ElectrokitSe,
     Vendors.ElektorNl => ProductUpdateItems.ElektorNl,
     Vendors.FarnellUk => ProductUpdateItems.FarnellUk,
+    Vendors.KamamiPl => ProductUpdateItems.KamamiPl,
     Vendors.KubiiFr => ProductUpdateItems.KubiiFr,
     Vendors.McHobbyBe => ProductUpdateItems.McHobbyBe,
     Vendors.MeloperoIt => ProductUpdateItems.MeloperoIt,
     Vendors.NewarkUs => ProductUpdateItems.NewarkUs,
+    Vendors.PiAustraliaAu => ProductUpdateItems.PiAustraliaAu,
     Vendors.PimoroniUk => ProductUpdateItems.PimoroniUk,
     Vendors.PiShopCa => ProductUpdateItems.PiShopCa,
     Vendors.PiShopCh => ProductUpdateItems.PiShopCh,
@@ -32,6 +34,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
     Vendors.SemafAt => ProductUpdateItems.SemafAt,
     Vendors.SparkfunUs => ProductUpdateItems.SparkfunUs,
     Vendors.ThePiHutUk => ProductUpdateItems.ThePiHutUk,
+    Vendors.ThreeThreeZeroOhmsMx => ProductUpdateItems.ThreeThreeZeroOhmsMx,
     Vendors.TiendatecEs => ProductUpdateItems.TiendatecEs,
     Vendors.WelectronDe => ProductUpdateItems.WelectronDe
   }
