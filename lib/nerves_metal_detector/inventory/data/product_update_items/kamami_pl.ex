@@ -14,13 +14,6 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.KamamiPl do
       sku: "RPI3-MODBP"
     },
 
-    # RPi CM3
-    # Not sure if this is actually CM3+Lite since Rpilocator had it as CM3-Lite
-    #    %ProductUpdate{
-    #      url: "https://kamami.pl/moduly/563759-raspberry-pi-cm3l-compute-module-3-lite.html",
-    #      sku: "CM3+Lite"
-    #    },
-
     # RPi 4
     %ProductUpdate{
       url:
