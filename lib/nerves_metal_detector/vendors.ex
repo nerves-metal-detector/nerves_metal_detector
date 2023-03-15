@@ -20,6 +20,7 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.McHobbyBe,
     Vendors.MeloperoIt,
     Vendors.NewarkUs,
+    Vendors.PiAustraliaAu,
     Vendors.PimoroniUk,
     Vendors.PiShopCa,
     Vendors.PiShopCh,
