@@ -35,6 +35,7 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.SemafAt,
     Vendors.SparkfunUs,
     Vendors.ThePiHutUk,
+    Vendors.ThreeThreeZeroOhmsMx,
     Vendors.TiendatecEs,
     Vendors.WelectronDe
   ]

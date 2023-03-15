@@ -34,6 +34,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
     Vendors.SemafAt => ProductUpdateItems.SemafAt,
     Vendors.SparkfunUs => ProductUpdateItems.SparkfunUs,
     Vendors.ThePiHutUk => ProductUpdateItems.ThePiHutUk,
+    Vendors.ThreeThreeZeroOhmsMx => ProductUpdateItems.ThreeThreeZeroOhmsMx,
     Vendors.TiendatecEs => ProductUpdateItems.TiendatecEs,
     Vendors.WelectronDe => ProductUpdateItems.WelectronDe
   }
