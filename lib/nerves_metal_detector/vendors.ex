@@ -5,6 +5,7 @@ defmodule NervesMetalDetector.Vendors do
 
   @vendors [
     Vendors.AdafruitUs,
+    Vendors.ArgonFortyCn,
     Vendors.BerryBaseDe,
     Vendors.BuyzeroDe,
     Vendors.BotlandCz,
@@ -28,6 +29,7 @@ defmodule NervesMetalDetector.Vendors do
     Vendors.PiShopUs,
     Vendors.PiShopZa,
     Vendors.RapidUk,
+    Vendors.RaspberryPiDk,
     Vendors.RaspberryStoreNl,
     Vendors.RasppishopDe,
     Vendors.ReicheltDe,
