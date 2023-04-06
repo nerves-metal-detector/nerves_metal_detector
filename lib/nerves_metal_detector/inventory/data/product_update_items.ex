@@ -4,6 +4,7 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems do
 
   @mapping %{
     Vendors.AdafruitUs => ProductUpdateItems.AdafruitUs,
+    Vendors.ArgonFortyCn => ProductUpdateItems.ArgonFortyCn,
     Vendors.BerryBaseDe => ProductUpdateItems.BerryBaseDe,
     Vendors.BuyzeroDe => ProductUpdateItems.BuyzeroDe,
     Vendors.BotlandCz => ProductUpdateItems.BotlandCz,
