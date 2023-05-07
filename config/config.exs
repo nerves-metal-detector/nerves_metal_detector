@@ -62,12 +62,13 @@ config :phoenix, :json_library, Jason
 
 config :nerves_metal_detector, Oban,
   repo: NervesMetalDetector.Repo,
-  queues: [default: 1, product_updates: 15],
+  queues: [default: 1, product_updates: 15, product_availability_snapshots_purge: 1],
   plugins: [
     Oban.Plugins.Pruner,
     {Oban.Plugins.Cron,
      crontab: [
-       {"0 * * * *", NervesMetalDetector.Jobs.ScheduleProductUpdates}
+       {"0 * * * *", NervesMetalDetector.Jobs.ScheduleProductUpdates},
+       {"10 0 * * *", NervesMetalDetector.Jobs.ScheduleProductAvailabilitySnapshotsPurges}
      ]}
   ]
 

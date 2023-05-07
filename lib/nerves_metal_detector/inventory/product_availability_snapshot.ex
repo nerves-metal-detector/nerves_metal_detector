@@ -20,7 +20,7 @@ defmodule NervesMetalDetector.Inventory.ProductAvailabilitySnapshot do
     field :in_stock, :boolean
     field :items_in_stock, :integer
     field :price, Money.Ecto.Composite.Type
-    field :fetched_at, :utc_datetime
+    field :fetched_at, :utc_datetime, primary_key: true
   end
 
   @doc false
