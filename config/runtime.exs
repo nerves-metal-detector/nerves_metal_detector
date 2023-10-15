@@ -51,6 +51,8 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
+  config :nerves_metal_detector, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+
   config :nerves_metal_detector, NervesMetalDetectorWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [
