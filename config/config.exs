@@ -9,7 +9,7 @@ import Config
 
 config :nerves_metal_detector,
   ecto_repos: [NervesMetalDetector.Repo],
-  generators: [binary_id: true]
+  generators: [binary_id: true, timestamp_type: :utc_datetime]
 
 # Configures the endpoint
 config :nerves_metal_detector, NervesMetalDetectorWeb.Endpoint,
@@ -32,7 +32,7 @@ config :nerves_metal_detector, NervesMetalDetectorWeb.Endpoint,
 config :nerves_metal_detector, NervesMetalDetector.Mailer, adapter: Swoosh.Adapters.Local
 
 config :tailwind,
-  version: "3.2.4",
+  version: "3.3.2",
   default: [
     args: ~w(
         --config=tailwind.config.js
@@ -44,7 +44,7 @@ config :tailwind,
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.41",
+  version: "0.17.11",
   default: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),

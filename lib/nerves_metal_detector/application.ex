@@ -11,18 +11,14 @@ defmodule NervesMetalDetector.Application do
 
     children = [
       {Cluster.Supervisor, [topologies, [name: NervesMetalDetector.ClusterSupervisor]]},
-      # Start the Telemetry supervisor
       NervesMetalDetectorWeb.Telemetry,
-      # Start the Ecto repository
       NervesMetalDetector.Repo,
-      # Start the PubSub system
+      {DNSCluster, query: Application.get_env(:nerves_metal_detector, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: NervesMetalDetector.PubSub},
-      # Start Finch
       {Finch, name: NervesMetalDetector.Finch},
-      # Start the Endpoint (http/https)
       NervesMetalDetectorWeb.Endpoint,
       # Start a worker by calling: NervesMetalDetector.Worker.start_link(arg)
-      # {NervesMetalDetector.Worker, arg}
+      # {NervesMetalDetector.Worker, arg},
       {Oban, Application.fetch_env!(:nerves_metal_detector, Oban)}
     ]
 
