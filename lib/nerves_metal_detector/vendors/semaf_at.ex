@@ -38,8 +38,6 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
       ]
     ]
 
-    # Semaf has "application/ld+json" data but in a wrong encoding and Jason cannot parse it,
-    # so we parse the HTML instead.
     with {:load_body, {:ok, %{body: body}}} when body not in [nil, ""] <-
            {:load_body, HTTPoison.get(url, [], options)},
          {:parse_document, parsed} when parsed not in [nil, []] <-
@@ -53,7 +51,8 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
          {:parse_price, price} when not is_nil(price) <-
            {:parse_price, parse_price(json_info)},
          {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(json_info)},
-         {:parse_items_in_stock, items_in_stock} <- {:parse_items_in_stock, parse_items_in_stock(product_offer)} do
+         {:parse_items_in_stock, items_in_stock} <-
+           {:parse_items_in_stock, parse_items_in_stock(product_offer)} do
       data = %{
         sku: sku,
         vendor: SemafAt.vendor_info().id,
@@ -115,7 +114,6 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
 
     with children when children not in [nil, []] <- children,
          text <- Floki.text(children) do
-
       items_in_stock =
         case Integer.parse(String.trim(text)) do
           {count, _} -> count

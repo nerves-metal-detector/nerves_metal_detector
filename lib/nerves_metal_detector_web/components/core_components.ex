@@ -160,7 +160,7 @@ defmodule NervesMetalDetectorWeb.CoreComponents do
         Attempting to reconnect <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
       </.flash>
 
-       <.flash
+      <.flash
         id="server-error"
         kind={:error}
         title="Something went wrong!"
