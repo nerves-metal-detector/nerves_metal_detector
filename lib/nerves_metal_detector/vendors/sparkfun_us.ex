@@ -50,13 +50,15 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
            {:parse_price, parse_price(product)},
          {:parse_item_url, item_url} when not is_nil(item_url) <-
            {:parse_item_url, parse_item_url(parsed)},
-         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(product)} do
+         {:parse_in_stock, in_stock} <- {:parse_in_stock, parse_in_stock(product)},
+         {:parse_items_in_stock, items_in_stock} <-
+           {:parse_items_in_stock, parse_items_in_stock(product)} do
       data = %{
         sku: sku,
         vendor: SparkfunUs.vendor_info().id,
         url: item_url,
         in_stock: in_stock,
-        items_in_stock: nil,
+        items_in_stock: items_in_stock,
         price: Money.new!(String.to_atom(currency), price)
       }
 
@@ -96,6 +98,17 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
       "http://schema.org/InStock" -> true
       "https://schema.org/InStock" -> true
       _ -> false
+    end
+  end
+
+  defp parse_items_in_stock(html_tree) do
+    with available when available not in [nil, []] <-
+           Floki.find(html_tree, ".quantity-row strong"),
+         text when is_binary(text) <- Floki.text(available),
+         {value, _} <- Integer.parse(text) do
+      value
+    else
+      _ -> nil
     end
   end
 end

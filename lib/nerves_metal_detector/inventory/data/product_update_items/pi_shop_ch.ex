@@ -82,7 +82,11 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.PiShopCh do
     },
 
     # RPi Zero
-    %ProductUpdate{url: "https://www.pi-shop.ch/raspberry-pi-zero-w-1811", sku: "SC0020"},
+    %ProductUpdate{url: "https://www.pi-shop.ch/raspberry-pi-zero-w", sku: "SC0020"},
+    %ProductUpdate{
+      url: "https://www.pi-shop.ch/raspberry-pi-zero-wh-header-geloetet",
+      sku: "SC0020WH"
+    },
 
     # RPi Zero 2
     %ProductUpdate{url: "https://www.pi-shop.ch/raspberry-pi-zero-2-w", sku: "SC0510"}

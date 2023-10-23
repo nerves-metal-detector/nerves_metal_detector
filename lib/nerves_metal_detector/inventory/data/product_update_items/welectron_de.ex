@@ -78,11 +78,11 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.WelectronDe do
 
     # RPi Zero
     %ProductUpdate{
-      url: "https://www.welectron.com/Raspberry-Pi-Zero-W-mit-loser-Stiftleiste",
+      url: "https://www.welectron.com/Raspberry-Pi-Zero-W",
       sku: "SC0020"
     },
     %ProductUpdate{
-      url: "https://www.welectron.com/Raspberry-Pi-Zero-WH-mit-verloeteter-Stiftleiste",
+      url: "https://www.welectron.com/Raspberry-Pi-Zero-WH",
       sku: "SC0020WH"
     },
 
