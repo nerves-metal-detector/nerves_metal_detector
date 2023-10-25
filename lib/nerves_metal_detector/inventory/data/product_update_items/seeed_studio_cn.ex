@@ -34,6 +34,12 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.SeeedStudioCn do
     %ProductUpdate{
       url: "https://www.seeedstudio.com/raspberry-pi-compute-module-cm4108032-p-5220.html",
       sku: "CM4108032"
+    },
+
+    # RPi 4
+    %ProductUpdate{
+      url: "https://www.seeedstudio.com/Raspberry-Pi-4-Computer-Model-B-4GB-p-4077.html",
+      sku: "RPI4-MODBP-4GB"
     }
   ]
 

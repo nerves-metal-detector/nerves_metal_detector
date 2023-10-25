@@ -176,7 +176,11 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.PiShopCa do
     %ProductUpdate{url: "https://www.pishop.ca/product/raspberry-pi-zero-w/", sku: "SC0020"},
 
     # RPi Zero 2
-    %ProductUpdate{url: "https://www.pishop.ca/product/raspberry-pi-zero-2-w/", sku: "SC0510"}
+    %ProductUpdate{url: "https://www.pishop.ca/product/raspberry-pi-zero-2-w/", sku: "SC0510"},
+    %ProductUpdate{
+      url: "https://www.pishop.ca/product/raspberry-pi-zero-2-w-with-pre-soldered-headers/",
+      sku: "SC0510WH"
+    }
   ]
 
   def all(), do: @items

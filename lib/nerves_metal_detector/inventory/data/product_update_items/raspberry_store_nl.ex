@@ -31,6 +31,13 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.RaspberryStoreNl
       sku: "RPI4-MODBP-8GB"
     },
 
+    # RPi Zero
+    %ProductUpdate{
+      url:
+        "https://www.raspberrystore.nl/PrestaShop/en/raspberry-pi-zero-v1-en-v2/164-raspberry-pi-zero-707565827164.html",
+      sku: "SC0020"
+    },
+
     # RPi Zero 2
     %ProductUpdate{
       url:
