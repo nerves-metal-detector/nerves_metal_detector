@@ -30,6 +30,12 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.ChicagoElectroni
       sku: "RPI4-MODBP-8GB"
     },
 
+    # RPi Zero
+    %ProductUpdate{
+      url: "https://chicagodist.com/products/raspberry-pi-zero-w",
+      sku: "SC0020"
+    },
+
     # RPi Zero 2
     %ProductUpdate{url: "https://chicagodist.com/products/raspberry-pi-zero-2", sku: "SC0510"}
   ]

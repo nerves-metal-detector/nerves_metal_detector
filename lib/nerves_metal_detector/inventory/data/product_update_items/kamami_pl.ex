@@ -36,6 +36,13 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.KamamiPl do
       sku: "RPI4-MODBP-8GB"
     },
 
+    # RPi Zero
+    %ProductUpdate{
+      url:
+        "https://kamami.pl/raspberry-pi-zero/1183083-sc0020-raspberry-pi-zero-w--707565827164.html",
+      sku: "SC0020"
+    },
+
     # RPi Zero 2
     %ProductUpdate{
       url:

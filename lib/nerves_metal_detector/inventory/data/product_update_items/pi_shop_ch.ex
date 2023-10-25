@@ -67,6 +67,10 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.PiShopCh do
       sku: "CM4002000"
     },
     %ProductUpdate{
+      url: "https://www.pi-shop.ch/raspberry-pi-compute-module-4-and-io-board-2-gb-ram-8gb-emmc",
+      sku: "CM4002008"
+    },
+    %ProductUpdate{
       url:
         "https://www.pi-shop.ch/raspberry-pi-compute-module-4-and-io-board-4-gb-ram-lite-wireless",
       sku: "CM4104000"
