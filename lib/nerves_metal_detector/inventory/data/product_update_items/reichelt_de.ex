@@ -5,22 +5,22 @@ defmodule NervesMetalDetector.Inventory.Data.ProductUpdateItems.ReicheltDe do
     # RPi CM4
     %ProductUpdate{
       url:
-        "https://www.reichelt.de/de/en/raspberry-pi-compute-module-4-1gb-ram-16gb-emmc-wlan-rpi-cm4w-1gb16gb-p290501.html",
+        "https://www.reichelt.de/raspberry-pi-compute-module-4-1gb-ram-16gb-emmc-wlan-rpi-cm4w-1gb16gb-p290501.html",
       sku: "CM4101016"
     },
     %ProductUpdate{
       url:
-        "https://www.reichelt.de/de/en/raspberry-pi-compute-module-4-1gb-ram-32gb-emmc-rpi-cm4-1gb32gb-p290498.html",
+        "https://www.reichelt.de/raspberry-pi-compute-module-4-1gb-ram-32gb-emmc-rpi-cm4-1gb32gb-p290498.html",
       sku: "CM4001032"
     },
     %ProductUpdate{
       url:
-        "https://www.reichelt.de/de/en/raspberry-pi-compute-module-4-1gb-ram-8gb-emmc-rpi-cm4-1gb8gb-p290496.html?&trstct=pol_11&nbc=1",
+        "https://www.reichelt.de/raspberry-pi-compute-module-4-1gb-ram-8gb-emmc-rpi-cm4-1gb8gb-p290496.html?&trstct=pol_11&nbc=1",
       sku: "CM4001008"
     },
     %ProductUpdate{
       url:
-        "https://www.reichelt.de/de/en/raspberry-pi-compute-module-4-4gb-ram-8gb-emmc-wlan-rpi-cm4w-4gb8gb-p290540.html",
+        "https://www.reichelt.de/raspberry-pi-compute-module-4-4gb-ram-8gb-emmc-wlan-rpi-cm4w-4gb8gb-p290540.html",
       sku: "CM4104008"
     },
 
