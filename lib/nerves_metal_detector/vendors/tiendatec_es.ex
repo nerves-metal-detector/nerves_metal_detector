@@ -26,6 +26,8 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   def fetch_availability(%TiendatecEs.ProductUpdate{url: url, sku: sku}) do
     options = [
       follow_redirect: true,
+      timeout: 10_000,
+      recv_timeout: 10_000,
       ssl: [
         {:versions, :ssl.versions()[:supported]},
         {:verify, :verify_peer},
@@ -87,7 +89,10 @@ defimpl NervesMetalDetector.Inventory.ProductAvailability.Fetcher,
   end
 
   defp parse_currency(json_info) do
-    get_in(json_info, ["offers", "priceCurrency"])
+    case get_in(json_info, ["offers", "priceCurrency"]) do
+      "E" -> "EUR"
+      value -> value
+    end
   end
 
   defp parse_price(json_info) do
